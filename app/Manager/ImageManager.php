@@ -3,7 +3,9 @@
 namespace App\Manager;
 use Intervention\Image\Facades\Image;
 
-class ImageUploadManager {
+class ImageManager {
+
+    public const DEFAULT_IMAGE = 'images/default-image.webp';
 
     final public static function uploadImage(string $name, int $width, int $height, string $path, string $file):string
     {
@@ -18,5 +20,14 @@ class ImageUploadManager {
         if ($img !== '' && file_exists($path)) {
             unlink($path);
         }
+    }
+
+    final public static function prepareImageUrl(string $path, string $image): string
+    {
+        $url = url($path.$image);
+        if(empty($image)) {
+            $url = url(self::DEFAULT_IMAGE);
+        }
+        return $url;
     }
 }
