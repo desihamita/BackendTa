@@ -7,17 +7,20 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use App\Manager\ImageUploadManager;
+use App\Manager\ImageManager;
 use App\Http\Resources\CategoryListResource;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    final public function index(Request $request): AnonymousResourceCollection
     {
-        $categories = (new Category())->getAllCategories();
+        $categories = (new Category())->getAllCategories($request->all());
         return CategoryListResource::collection($categories);
     }
 
@@ -72,8 +75,13 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    final public function destroy(Category $category): JsonResponse
     {
-        //
+        if (!empty($category->photo)) {
+            ImageManager::deletePhoto(Category::IMAGE_UPLOAD_PATH, $category->photo);
+            ImageManager::deletePhoto(Category::THUMB_IMAGE_UPLOAD_PATH, $category->photo);
+        }
+        $category->delete();
+        return response()->json(['msg' => 'Category deleted Successfully', 'cls' => 'warning']);
     }
 }
