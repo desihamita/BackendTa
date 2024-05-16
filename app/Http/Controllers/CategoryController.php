@@ -25,6 +25,11 @@ class CategoryController extends Controller
         return CategoryListResource::collection($categories);
     }
 
+    final public function show(Category $category): CategoryEditResource
+    {
+        return new CategoryEditResource($category);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -38,22 +43,6 @@ class CategoryController extends Controller
         }
         (new Category())->storeCategory($category);
         return response()->json(['msg' => 'Category Created Successfully', 'cls' => 'success']);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    final public function show(Category $category): CategoryEditResource
-    {
-        return new CategoryEditResource($category);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
     }
 
     /**
@@ -83,6 +72,12 @@ class CategoryController extends Controller
         }
         $category->delete();
         return response()->json(['msg' => 'Category deleted Successfully', 'cls' => 'warning']);
+    }
+
+    final public function get_category_list(): JsonResponse
+    {
+        $categories = (new Category())->getCategoryIdAndName();
+        return response()->json($categories);
     }
 
     private function processImageUpload(string $photo, string $name, string|null $existing_photo = null): string
