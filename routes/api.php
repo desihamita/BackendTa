@@ -11,6 +11,7 @@ use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\AttributeController;
 
 use App\Manager\ScriptManager;
 
@@ -35,8 +36,9 @@ Route::group(['middleware' => 'auth:sanctum'], static function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::get('get-category-list', [CategoryController::class, 'get_category_list']);
-    Route::apiResource('category', CategoryController::class);
 
+    Route::apiResource('category', CategoryController::class);
     Route::apiResource('sub-category', SubCategoryController::class);
     Route::apiResource('brand', BrandController::class);
+    Route::apiResource('attribute', AttributeController::class);
 });
