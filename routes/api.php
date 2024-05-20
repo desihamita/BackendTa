@@ -12,6 +12,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\AttributeValueController;
 
 use App\Manager\ScriptManager;
 
@@ -41,4 +42,5 @@ Route::group(['middleware' => 'auth:sanctum'], static function () {
     Route::apiResource('sub-category', SubCategoryController::class);
     Route::apiResource('brand', BrandController::class);
     Route::apiResource('attribute', AttributeController::class);
+    Route::apiResource('value', AttributeValueController::class);
 });
