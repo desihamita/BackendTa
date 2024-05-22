@@ -20,6 +20,9 @@ class ValueListResource extends JsonResource
             'status' => $this->status === 1 ? 'Active' : 'Inactive',
             'status_original' => $this->status,
             'created_by' => $this->user?->name,
+            'created_at' => $this->created_at->toDayDateTimeString(),
+            'updated_at' => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated at',
+            'value' => $this->value ? ValueListResource::collection($this->value) : [],
         ];
     }
 }
