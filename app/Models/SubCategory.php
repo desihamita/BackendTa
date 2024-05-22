@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Category;
+use App\Models\User;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Models\Category;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 
 class SubCategory extends Model
 {
@@ -56,5 +58,10 @@ class SubCategory extends Model
     final public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    final public function getSubCategoryIdAndName(int $category_id): Collection
+    {
+        return self::query()->select('id', 'name')->where('category_id', $category_id)->get();
     }
 }

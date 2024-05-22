@@ -13,6 +13,7 @@ use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AttributeValueController;
+use App\Http\Controllers\CountryController;
 
 use App\Manager\ScriptManager;
 
@@ -26,17 +27,20 @@ use App\Manager\ScriptManager;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-//Route::get('test', [ScriptManager::class, 'getLocationData']);
+Route::get('test', [ScriptManager::class, 'getCountry']);
 
 Route::post('login', [AuthController::class, 'login']);
 
 Route::get('divisions', [DivisionController::class, 'index']);
-Route::get('districts/{id}', [DistrictController::class, 'index']);
+Route::get('districts/{division_id}', [DistrictController::class, 'index']);
 
 Route::group(['middleware' => 'auth:sanctum'], static function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::get('get-category-list', [CategoryController::class, 'get_category_list']);
+    Route::get('get-sub-category-list/{category_id}', [SubCategoryController::class, 'get_sub_category_list']);
+    Route::get('get-brand-list', [BrandController::class, 'get_brand_list']);
+    Route::get('get-country-list', [CountryController::class, 'get_country_list']);
 
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('sub-category', SubCategoryController::class);

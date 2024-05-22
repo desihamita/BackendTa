@@ -2,16 +2,21 @@
 
 namespace App\Models;
 
+use App\Models\User;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\User;
+use Illuminate\Support\Collection;
 
 class Brand extends Model
 {
     public const IMAGE_UPLOAD_PATH = 'images/uploads/brand/';
     public const THUMB_IMAGE_UPLOAD_PATH = 'images/uploads/brand_thumb/';
+
+    public const STATUS_ACTIVE = 1;
 
     use HasFactory;
 
@@ -49,5 +54,10 @@ class Brand extends Model
     final public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    final public function getBrandIdAndName(): Builder|Collection
+    {
+        return self::query()->select('id', 'name')->where('status', self::STATUS_ACTIVE)->get();
     }
 }

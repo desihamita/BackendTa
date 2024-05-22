@@ -6,6 +6,7 @@ use App\Models\Division;
 use App\Models\District;
 use App\Models\SubDistrict;
 use App\Models\Area;
+use App\Models\Country;
 
 class ScriptManager {
 
@@ -70,5 +71,18 @@ class ScriptManager {
             }
             echo 'success';
         }
+    }
+
+    public function getCountry()
+    {
+        $url = 'https://restcountries.com/v3.1/all';
+        $response  = Http::get($url);
+        $response = json_decode($response->body(), true);
+        foreach ($response['name'] as $country) {
+            $country_data['name'] = $countr['name']['common'];
+            Country::create($country_data);
+            dd($country_data);
+        }
+        dd($response[0]['name']['common']);
     }
 }

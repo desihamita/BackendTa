@@ -17,26 +17,12 @@ use App\Http\Resources\SubCategoryEditResource;
 
 class SubCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     final public function index(Request $request): AnonymousResourceCollection
     {
         $categories = (new SubCategory())->getAllSubCategories($request->all());
         return SubCategoryResource::collection($categories);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     final public function store(StoreSubCategoryRequest $request):  JsonResponse
     {
         $sub_category = $request->except('photo');
@@ -50,17 +36,11 @@ class SubCategoryController extends Controller
         return response()->json(['msg' => 'Category Created Successfully', 'cls' => 'success']);
     }
 
-    /**
-     * Display the specified resource.
-     */
     final public function show(SubCategory $subCategory): SubCategoryEditResource
     {
         return new SubCategoryEditResource($subCategory);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     final public function update(UpdateSubCategoryRequest $request, SubCategory $subCategory)
     {
         $sub_category_data = $request->except('photo');
@@ -74,9 +54,6 @@ class SubCategoryController extends Controller
         return response()->json(['msg' => 'Sub Category Updated Successfully', 'cls' => 'success']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(SubCategory $subCategory)
     {
         if (!empty($subCategory->photo)) {
@@ -105,5 +82,11 @@ class SubCategoryController extends Controller
         $photo_name = ImageManager::uploadImage($name, $width, $height, $path, $file);
         ImageManager::uploadImage($name, $width_thumb, $height__thumb, $path_thumb, $file);
         return $photo_name;
+    }
+
+    final public function get_Sub_category_list(int $category_id): JsonResponse
+    {
+        $Sub_categories = (new SubCategory())->getSubCategoryIdAndName($category_id);
+        return response()->json($Sub_categories);
     }
 }

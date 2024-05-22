@@ -16,18 +16,12 @@ use App\Http\Resources\BrandEditResource;
 
 class BrandController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     final public function index(Request $request): AnonymousResourceCollection
     {
         $brands = (new Brand())->getAllbrands($request->all());
         return BrandListResource::collection($brands);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     final public function store(StoreBrandRequest $request): JsonResponse
     {
         $brand = $request->except('logo');
@@ -42,26 +36,12 @@ class BrandController extends Controller
         return response()->json(['msg' => 'Brand Created Successfully', 'cls' => 'success']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Brand $brand): BrandEditResource
+    final public function show(Brand $brand): BrandEditResource
     {
         return new BrandEditResource($brand);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Brand $brand)
-    {
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateBrandRequest $request, Brand $brand): JsonResponse
+    final public function update(UpdateBrandRequest $request, Brand $brand): JsonResponse
     {
         $brand_data = $request->except('logo');
         $brand_data['slug'] = Str::slug($request->input('slug'));
@@ -74,10 +54,7 @@ class BrandController extends Controller
         return response()->json(['msg' => 'Brand Updated Successfully', 'cls' => 'success']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Brand $brand): JsonResponse
+    final public function destroy(Brand $brand): JsonResponse
     {
         if(!empty($brand->logo)) {
             ImageManager::deletePhoto(Brand::IMAGE_UPLOAD_PATH, $brand->logo);
@@ -106,5 +83,11 @@ class BrandController extends Controller
         $photo_name = ImageManager::uploadImage($name, $width, $height, $path, $file);
         ImageManager::uploadImage($name, $width_thumb, $height__thumb, $path_thumb, $file);
         return $photo_name;
+    }
+
+    final public function get_brand_list(): JsonResponse
+    {
+        $brands = (new Brand())->getBrandIdAndName();
+        return response()->json($brands);
     }
 }
