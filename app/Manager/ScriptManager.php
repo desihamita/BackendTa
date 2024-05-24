@@ -79,10 +79,8 @@ class ScriptManager {
         $response  = Http::get($url);
         $response = json_decode($response->body(), true);
         foreach ($response['name'] as $country) {
-            $country_data['name'] = $countr['name']['common'];
+            $country_data['name'] = $country['name']['common'];
             Country::create($country_data);
-            dd($country_data);
         }
-        dd($response[0]['name']['common']);
     }
 }

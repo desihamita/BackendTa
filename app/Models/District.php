@@ -12,7 +12,7 @@ class District extends Model
     use HasFactory;
     protected $guarded = [];
 
-    final public function getDistrictByDivisionId(string $id): Builder|Collection
+    final public function getDistrictByDivisionId(int $id): Builder|Collection
     {
         return self::query()->select('id', 'name')->where('division_id', $id)->get();
     }

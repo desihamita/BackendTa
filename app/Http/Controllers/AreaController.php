@@ -10,9 +10,9 @@ use Illuminate\Http\JsonResponse;
 
 class AreaController extends Controller
 {
-    final public function index(): JsonResponse
+    final public function index(int $id): JsonResponse
     {
-        $areas = (new Area())->getAreasList();
+        $areas = (new Area())->getAreaBySubDistrictId($id);
         return response()->json($areas);
     }
 }

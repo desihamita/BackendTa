@@ -32,7 +32,9 @@ Route::get('test', [ScriptManager::class, 'getCountry']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::get('divisions', [DivisionController::class, 'index']);
-Route::get('districts/{division_id}', [DistrictController::class, 'index']);
+Route::get('districts/{id}', [DistrictController::class, 'index']);
+Route::get('sub-districts/{id}', [SubDistrictController::class, 'index']);
+Route::get('areas/{id}', [AreaController::class, 'index']);
 
 Route::group(['middleware' => 'auth:sanctum'], static function () {
     Route::post('logout', [AuthController::class, 'logout']);

@@ -12,8 +12,8 @@ class Area extends Model
     use HasFactory;
     protected $guarded = [];
 
-    final public function getAreasList(): Builder|Collection
+    final public function getAreaBySubDistrictId(int $id): Builder|Collection
     {
-        return self::query()->select('id', 'name')->get();
+        return self::query()->select('id as value', 'name as label')->where('sub_district_id', $id)->get();
     }
 }

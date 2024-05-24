@@ -10,9 +10,9 @@ use Illuminate\Http\JsonResponse;
 
 class SubDistrictController extends Controller
 {
-    final public function index(): JsonResponse
+    final public function index(int $id): JsonResponse
     {
-        $subDistrics = (new SubDistrict())->getSubDistricsList();
-        return response()->json($subDistrics);
+        $subDistricts = (new SubDistrict())->getSubDistrictByDistrictId($id);
+        return response()->json($subDistricts);
     }
 }
