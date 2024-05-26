@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\SubDistrictController;
@@ -47,6 +48,7 @@ Route::group(['middleware' => 'auth:sanctum'], static function () {
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('sub-category', SubCategoryController::class);
     Route::apiResource('brand', BrandController::class);
+    Route::apiResource('supplier', SupplierController::class);
     Route::apiResource('attribute', AttributeController::class);
     Route::apiResource('value', AttributeValueController::class);
 });

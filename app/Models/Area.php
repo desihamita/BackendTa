@@ -14,6 +14,6 @@ class Area extends Model
 
     final public function getAreaBySubDistrictId(int $id): Builder|Collection
     {
-        return self::query()->select('id as value', 'name as label')->where('sub_district_id', $id)->get();
+        return self::query()->select('id', 'name')->where('sub_district_id', $id)->get();
     }
 }
