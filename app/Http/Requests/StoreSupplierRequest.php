@@ -22,17 +22,18 @@ class StoreSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'address' => 'required|min:3|max:255',
-            'division_id' => 'required|numeric',
-            'district_id' => 'required|numeric',
-            'sub_district_id' => 'required|numeric',
-            'area_id' => 'required|numeric',
-            'landmark' => 'max:255',
             'name' => 'required|min:3|max:255',
             'phone' => 'required|numeric',
             'email' => 'required|email',
             'details' => 'max:1000',
             'logo' => 'required',
+
+            'address' => 'required|min:3|max:255',
+            'landmark' => 'max:255',
+            'division_id' => 'required|numeric',
+            'district_id' => 'required|numeric',
+            'sub_district_id' => 'required|numeric',
+            'area_id' => 'required|numeric',
         ];
     }
 }

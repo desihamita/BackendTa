@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->tinyInteger('status')->nullable();
             $table->tinyInteger('type')->nullable()->comment('1 = supplier, 2 = customer present, 3 = customer permanent');
+            $table->string('landmark')->nullable();
 
             $table->foreignId('division_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('district_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();

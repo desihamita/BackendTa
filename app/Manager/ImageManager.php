@@ -31,7 +31,7 @@ class ImageManager {
         return $url;
     }
 
-    public static function processImageUpload(
+    final public static function processImageUpload(
         string $file,
         string $name,
         string $path,
