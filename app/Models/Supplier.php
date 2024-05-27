@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use App\Models\User;
 
 class Supplier extends Model
@@ -81,5 +82,13 @@ class Supplier extends Model
     final public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    final public function getSupplierSelectList(): Builder|Collection
+    {
+        return self::query()
+            ->select('id','name', 'phone')
+            ->where('status', self::STATUS_ACTIVE)
+            ->get();
     }
 }

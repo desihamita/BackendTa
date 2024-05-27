@@ -46,4 +46,10 @@ class AttributeController extends Controller
         $attribute->delete();
         return response()->json(['msg' => 'Product Attribute deleted Successfully', 'cls' => 'warning']);
     }
+
+    final public function get_attribute_list(): JsonResponse
+    {
+        $attributes = (new Attribute())->getAttributeListWithValue();
+        return response()->json($attributes);
+    }
 }

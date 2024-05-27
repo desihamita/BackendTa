@@ -118,4 +118,10 @@ class SupplierController extends Controller
             return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning']);
         }
     }
+
+    final public function get_supplier_list(): JsonResponse
+    {
+        $suppliers = (new Supplier())->getSupplierSelectList();
+        return response()->json($suppliers);
+    }
 }

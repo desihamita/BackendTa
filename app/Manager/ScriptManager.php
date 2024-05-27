@@ -75,10 +75,11 @@ class ScriptManager {
 
     public function getCountry()
     {
+        ini_set('max_execution_time', 600);
         $url = 'https://restcountries.com/v3.1/all';
         $response  = Http::get($url);
         $response = json_decode($response->body(), true);
-        foreach ($response['name'] as $country) {
+        foreach ($response as $country) {
             $country_data['name'] = $country['name']['common'];
             Country::create($country_data);
         }
