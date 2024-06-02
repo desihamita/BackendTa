@@ -16,9 +16,6 @@ use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     final public function index(Request $request): AnonymousResourceCollection
     {
         $categories = (new Category())->getAllCategories($request->all());
@@ -30,9 +27,6 @@ class CategoryController extends Controller
         return new CategoryEditResource($category);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCategoryRequest $request)
     {
         $category = $request->except('photo');
@@ -45,9 +39,6 @@ class CategoryController extends Controller
         return response()->json(['msg' => 'Category Created Successfully', 'cls' => 'success']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     final public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
         $category_data = $request->except('photo');
@@ -61,9 +52,6 @@ class CategoryController extends Controller
         return response()->json(['msg' => 'Category Updated Successfully', 'cls' => 'success']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     final public function destroy(Category $category): JsonResponse
     {
         if (!empty($category->photo)) {

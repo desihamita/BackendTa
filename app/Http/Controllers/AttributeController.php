@@ -13,9 +13,6 @@ use Illuminate\Http\Request;
 
 class AttributeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     final public function index(Request $request): AnonymousResourceCollection
     {
         $attributes = (new Attribute())->getAttributeList($request->all());
