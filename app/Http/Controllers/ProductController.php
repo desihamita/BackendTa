@@ -8,13 +8,17 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\ProductAttribute;
 use App\Models\ProductSPecifications;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\ProductListResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductController extends Controller
 {
-    public function index()
+    final public function index(Request $request): AnonymousResourceCollection
     {
-        //
+        $products = (new Product())->getProductList($request);
+        return ProductListResource::collection($products);
     }
 
     public function create()
@@ -25,6 +29,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         try {
+            DB::beginTransaction();
             $product = (new Product())->storeProduct($request->all(), auth()->id());
 
             if($request->has('attributes')){
@@ -34,10 +39,12 @@ class ProductController extends Controller
             if($request->has('specifications')){
                 (new ProductSpecifications())->storeProductSpecification($request->input('specifications'), $product);
             }
-            
-            return response()->json(['msg' => 'Product Created Successfully', 'cls' => 'success']);
-        } catch (\Throwable $e) {;
-            return response()->json(['msg' => $e->getMessage(), 'cls' => 'danger']);
+
+            DB::commit();
+            return response()->json(['msg' => 'Product Created Successfully', 'cls' => 'success', 'product_id' => $product->id]);
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return response()->json(['msg' => $e->getMessage(), 'cls' => 'error']);
         }
     }
 

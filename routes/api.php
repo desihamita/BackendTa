@@ -16,6 +16,7 @@ use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductPhotoController;
 
 use App\Manager\ScriptManager;
 
@@ -37,6 +38,7 @@ Route::group(['middleware' => 'auth:sanctum'], static function () {
     Route::get('get-country-list', [CountryController::class, 'get_country_list']);
     Route::get('get-supplier-list', [SupplierController::class, 'get_supplier_list']);
     Route::get('get-attribute-list', [AttributeController::class, 'get_attribute_list']);
+    Route::post('product-photo-upload/{id}', [ProductPhotoController::class, 'store']);
 
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('sub-category', SubCategoryController::class);
