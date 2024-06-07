@@ -17,6 +17,7 @@ use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPhotoController;
+use App\Http\Controllers\ShopController;
 
 use App\Manager\ScriptManager;
 
@@ -47,4 +48,5 @@ Route::group(['middleware' => 'auth:sanctum'], static function () {
     Route::apiResource('attribute', AttributeController::class);
     Route::apiResource('value', AttributeValueController::class);
     Route::apiResource('product', ProductController::class);
+    Route::apiResource('shop', ShopController::class);
 });

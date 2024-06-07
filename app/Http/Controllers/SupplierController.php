@@ -99,7 +99,7 @@ class SupplierController extends Controller
             }
             Log::error('SUPPLIER_STORE_FAILED', ['supplier data' => $supplier_data, 'address data' => $address_data, 'exception' => $e]);
             DB::rollback();
-            return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning']);
+            return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning', 'flag' => 'true']);
         }
     }
 

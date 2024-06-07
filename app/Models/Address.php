@@ -74,7 +74,7 @@ class Address extends Model
         return $this->belongsTo(Area::class);
     }
 
-    final public function deleteAddressBySupplierId(Supplier $supplier): int
+    final public function deleteAddressBySupplierId($supplier): int
     {
         return $supplier->address()->delete();
     }
