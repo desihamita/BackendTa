@@ -92,4 +92,9 @@ class Shop extends Model
             ->where('status', self::STATUS_ACTIVE)
             ->get();
     }
+
+    public function getShopListIdName()
+    {
+        return self::query()->select(['id', 'name'])->where('status', 1)->get();
+    }
 }

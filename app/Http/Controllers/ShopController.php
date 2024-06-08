@@ -62,13 +62,13 @@ class ShopController extends Controller
         }
     }
 
-    public function show(Shop $shop): ShopEditResource
+    final public function show(Shop $shop): ShopEditResource
     {
         $shop->load('address');
         return new ShopEditResource($shop);
     }
 
-    public function update(UpdateShopRequest $request, Shop $shop)
+    final public function update(UpdateShopRequest $request, Shop $shop)
     {
         $shop_data = (new Shop())->prepareData($request->all(), auth());
         $address_data = (new Address())->prepareData($request->all());
@@ -100,8 +100,8 @@ class ShopController extends Controller
             return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning', 'flag' => 'true']);
         }
     }
-    
-    public function destroy(Shop $shop): JsonResponse
+
+    final public function destroy(Shop $shop): JsonResponse
     {
         try {
             if (!empty($shop->logo)) {
@@ -115,5 +115,12 @@ class ShopController extends Controller
             Log::error('SHOP_DELETE_FAILED', ['shop' => $shop, 'exception' => $e]);
             return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning']);
         }
+    }
+
+
+    final public function get_shop_list(): JsonResponse
+    {
+        $shops = (new Shop())->getShopListIdName();
+        return response()->json($shops);
     }
 }

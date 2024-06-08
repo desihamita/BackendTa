@@ -18,6 +18,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPhotoController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\SalesManagerController;
 
 use App\Manager\ScriptManager;
 
@@ -30,7 +31,7 @@ Route::get('districts/{id}', [DistrictController::class, 'index']);
 Route::get('sub-districts/{id}', [SubDistrictController::class, 'index']);
 Route::get('areas/{id}', [AreaController::class, 'index']);
 
-Route::group(['middleware' => 'auth:sanctum'], static function () {
+Route::group(['middleware' => ['auth:sanctum', 'auth:admin']], static function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::get('get-category-list', [CategoryController::class, 'get_category_list']);
@@ -39,6 +40,7 @@ Route::group(['middleware' => 'auth:sanctum'], static function () {
     Route::get('get-country-list', [CountryController::class, 'get_country_list']);
     Route::get('get-supplier-list', [SupplierController::class, 'get_supplier_list']);
     Route::get('get-attribute-list', [AttributeController::class, 'get_attribute_list']);
+    Route::get('get-shop-list', [ShopController::class, 'get_shop_list']);
     Route::post('product-photo-upload/{id}', [ProductPhotoController::class, 'store']);
 
     Route::apiResource('category', CategoryController::class);
@@ -49,4 +51,13 @@ Route::group(['middleware' => 'auth:sanctum'], static function () {
     Route::apiResource('value', AttributeValueController::class);
     Route::apiResource('product', ProductController::class);
     Route::apiResource('shop', ShopController::class);
+    Route::apiResource('sales-manager', SalesManagerController::class);
+});
+
+Route::group(['middleware' =>  ['auth:admin, sales_manager']], static function () {
+    Route::apiResource('product', ProductController::class)->only('index', 'show');
+});
+
+Route::group(['middleware' =>  ['auth:sales_manager']], static function () {
+    //Route::apiResource('product', ProductController::class)->only('index', 'show');
 });
