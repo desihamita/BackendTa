@@ -19,6 +19,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPhotoController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SalesManagerController;
+use App\Http\Controllers\CustomerController;
 
 use App\Manager\ScriptManager;
 
@@ -56,7 +57,7 @@ Route::group(['middleware' => ['auth:sanctum', 'auth:admin']], static function (
 
 Route::group(['middleware' =>  ['auth:sanctum','auth:admin,sales_manager']], static function () {
     Route::apiResource('product', ProductController ::class)->only('index', 'show');
-    Route::apiResource('attribute', AttributeController::class)->only('index', 'show');
+    Route::apiResource('customer', CustomerController ::class);
 });
 
 Route::group(['middleware' =>  ['auth:sanctum','auth:sales_manager']], static function () {
