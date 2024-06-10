@@ -26,6 +26,7 @@ class ProductListResource extends JsonResource
             'slug' => $this->slug,
             'cost' => PriceManager::CURRENCY_SYMBOL . $this->cost,
             'price' => PriceManager::CURRENCY_SYMBOL . $this->price,
+            'sall_price' => PriceManager::calculate_sell_price($this->price, $this->discount_percent, $this->discount_fixed, $this->discount_start, $this->discount_end),
             'sku' => $this->sku,
             'stock' => $this->stock,
             'description' => $this->description,

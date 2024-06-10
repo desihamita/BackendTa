@@ -23,7 +23,7 @@ class AuthController extends Controller
             $user = (new User())->getUserByEmailOrPhone($request->all());
             $role = self::ADMIN_USER;
         } else {
-            $user = (new SalesManager())->getSalesManagerByEmailOrPhone($request->all());
+            $user = (new SalesManager())->getUserByEmailOrPhone($request->all());
             $role = self::SALES_MANAGER_USER;
         }
 

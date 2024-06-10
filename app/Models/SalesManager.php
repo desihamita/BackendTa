@@ -15,7 +15,7 @@ use App\Models\User;
 
 class SalesManager extends Model
 {
-    use HasFactory, HasApiTokens, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -100,7 +100,7 @@ class SalesManager extends Model
         return $this->belongsTo(Shop::class);
     }
 
-    final public function getSalesManagerByEmailOrPhone(array $input):Builder|Model|null
+    final public function getUserByEmailOrPhone(array $input): Builder|Model|null
     {
         return self::query()->where('email', $input['email'])->orWhere('phone', $input['email'])->first();
     }

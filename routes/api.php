@@ -54,10 +54,10 @@ Route::group(['middleware' => ['auth:sanctum', 'auth:admin']], static function (
     Route::apiResource('sales-manager', SalesManagerController::class);
 });
 
-Route::group(['middleware' =>  ['auth:admin, sales_manager']], static function () {
-    Route::apiResource('product', ProductController::class)->only('index', 'show');
+Route::group(['middleware' =>  ['auth:sanctum','auth:admin,sales_manager']], static function () {
+    Route::apiResource('product', ProductController ::class)->only('index', 'show');
 });
 
-Route::group(['middleware' =>  ['auth:sales_manager']], static function () {
+Route::group(['middleware' =>  ['auth:sanctum','auth:sales_manager']], static function () {
     //Route::apiResource('product', ProductController::class)->only('index', 'show');
 });
