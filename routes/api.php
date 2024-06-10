@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth:sanctum', 'auth:admin']], static function (
 
 Route::group(['middleware' =>  ['auth:sanctum','auth:admin,sales_manager']], static function () {
     Route::apiResource('product', ProductController ::class)->only('index', 'show');
+    Route::apiResource('attribute', AttributeController::class)->only('index', 'show');
 });
 
 Route::group(['middleware' =>  ['auth:sanctum','auth:sales_manager']], static function () {

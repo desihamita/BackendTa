@@ -100,8 +100,7 @@ class Product extends Model
 
         if (!empty($input['search'])) {
             $query->where('name', 'like', '%'.$input['search'].'%')
-                ->orWhere('phone', 'like', '%'.$input['search'].'%')
-                ->orWhere('email', 'like', '%'.$input['search'].'%');
+                ->orWhere('sku', 'like', '%'.$input['search'].'%');
         }
 
         if (!empty($input['order_by'])) {
