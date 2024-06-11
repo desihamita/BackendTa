@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 
+use App\Http\Resources\ShopListResource;
 use App\Http\Requests\AuthRequest;
 use App\Models\SalesManager;
 use App\Models\User;
+use App\Models\Shop;
 
 class AuthController extends Controller
 {
@@ -28,12 +30,19 @@ class AuthController extends Controller
         }
 
         if($user && Hash::check($request->input('password'), $user->password)) {
+            $branch = null;
+
+            if($role == self::SALES_MANAGER_USER) {
+                $branch = (new Shop())->getShopDetailsById($user->shop_id);
+            }
+
             $user_data['token'] = $user->createToken($user->email)->plainTextToken;
             $user_data['name'] = $user->name;
             $user_data['phone'] = $user->phone;
             $user_data['photo'] = $user->photo;
             $user_data['email'] = $user->email;
             $user_data['role'] = $role;
+            $user_data['branch'] = new ShopListResource($branch);
             return response()->json($user_data);
         }
         throw ValidationException::withMessages([

@@ -23,8 +23,8 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3|max:25|string',
-            'phone' => 'required|digits:11|numeric|unique:customers',
-            'email' => 'required|min:3|max:50',
+            'phone' => 'digits:11|numeric|unique:customers',
+            'email' => 'min:3|max:50',
         ];
     }
 }
