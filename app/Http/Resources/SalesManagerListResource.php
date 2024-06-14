@@ -24,13 +24,16 @@ class SalesManagerListResource extends JsonResource
             'phone' => $this->phone,
             'bio' => $this->bio,
             'status' => $this->status == SalesManager::STATUS_ACTIVE ? SalesManager::STATUS_ACTIVE_TEXT : SalesManager::STATUS_INACTIVE_TEXT,
+
             'photo' => ImageManager::prepareImageUrl(SalesManager::THUMB_PHOTO_UPLOAD_PATH, $this->photo),
             'photo_full' => ImageManager::prepareImageUrl(SalesManager::PHOTO_UPLOAD_PATH, $this->photo),
             'nid_photo' => ImageManager::prepareImageUrl(SalesManager::THUMB_PHOTO_UPLOAD_PATH, $this->nid_photo),
             'nid_photo_full' => ImageManager::prepareImageUrl(SalesManager::PHOTO_UPLOAD_PATH, $this->nid_photo),
+
             'created_by' => $this->user?->name,
-            'created_at' => $this->created_at->toDayDateTimeString(),
-            'updated_at' => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated at',
+            'created_at' => $this->created_at ? $this->created_at->toDayDateTimeString() : '',
+            'updated_at' => $this->updated_at ? $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated yet' : null,
+
             'address' => new AddressListResource($this->address),
             'shop' =>$this->shop?->name,
         ];

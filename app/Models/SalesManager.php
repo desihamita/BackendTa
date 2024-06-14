@@ -17,6 +17,10 @@ class SalesManager extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $hidden = [
+        'password',
+    ];
+
     protected $fillable = [
         'name',
         'phone',
