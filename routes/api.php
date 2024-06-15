@@ -60,6 +60,10 @@ Route::group(['middleware' =>  ['auth:sanctum','auth:admin,sales_manager']], sta
     Route::apiResource('product', ProductController ::class)->only('index', 'show');
     Route::apiResource('customer', CustomerController ::class);
     Route::apiResource('order', OrderController::class);
+
+    Route::get('get-category-list', [CategoryController::class, 'get_category_list']);
+    Route::get('get-sub-category-list/{category_id}', [SubCategoryController::class, 'get_sub_category_list']);
+    Route::get('get-product-list-for-barcode', [ProductController::class, 'get_product_list_for_barcode']);
 });
 
 Route::group(['middleware' =>  ['auth:sanctum','auth:sales_manager']], static function () {

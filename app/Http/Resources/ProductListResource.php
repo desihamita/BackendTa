@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Manager\ImageManager;
-use App\Manager\PriceManager;
 use App\Models\ProductPhoto;
 use App\Models\Product;
 use Carbon\Carbon;

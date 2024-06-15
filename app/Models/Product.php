@@ -110,6 +110,32 @@ class Product extends Model
         return $query->paginate($per_page);
     }
 
+    public function getProductForBarcode($input)
+    {
+        $query = self::query()->select(
+            'id',
+            'name',
+            'sku',
+            'price',
+            'discount_end',
+            'discount_fixed',
+            'discount_percent',
+            'discount_start',
+
+        );
+
+        if(!empty(isset($input['name']))) {
+            $query->where('name', 'like', '%'.$input['name'].'%');
+        }
+        if(!empty(isset($input['category_id']))) {
+            $query->where('category_id', $input['category_id']);
+        }
+        if(!empty(isset($input['sub_category_id']))) {
+            $query->where('sub_category_id', $input['sub_category_id']);
+        }
+        return $query->get();
+    }
+
     final public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

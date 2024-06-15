@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\ProductListResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Http\Resources\ProductListForBarcodeResource;
 
 class ProductController extends Controller
 {
@@ -56,5 +57,11 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function get_product_list_for_barcode(Request $request)
+    {
+        $products = (new Product())->getProductForBarcode($request->all());
+        return ProductListForBarcodeResource::collection($products);
     }
 }

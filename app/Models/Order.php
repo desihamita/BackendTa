@@ -38,6 +38,22 @@ class Order extends Model
         return $query->paginate(10);
     }
 
+    public function placeOrder(array $input, $auth)
+    {
+        $order_data = $this->prepareData($input, $auth);
+        if (isset($order_data['error_description'])) {
+            return $order_data;
+        }
+        $order = self::query()->create($order_data['order_data']);
+        (new OrderDetails())->storeOrderDetails($order_data['order_details'], $order);
+        (new Transaction())->storeTransaction($input, $order, $auth);
+    }
+
+    public function prepareData(array $input, $auth)
+    {
+        $price = OrderManager::handle_order_data($input);
+    }
+
     public function customer(): BelongTo
     {
         return $this->belongsTo(Customer::class);

@@ -19,12 +19,21 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $order = (new Order)->placeOrder($request->all(), auth()->user());
+            DB::commit();
+            return response()->json(['msg' => 'Order Placed Created Successfully', 'cls' => 'success', 'flag' => true]);
+        } catch (\Throwable $th) {
+            Log::error('ORDER_PLACED_FAILED', ['msg' => $th->getMessage(), $th]);
+            DB::rollback();
+            return response()->json(['msg' => $e->getMessage(), 'cls' => 'warning']);
+        }
     }
 
     public function show(Order $order)
     {
-        $order->load(['customer', 'payment_method', 'sales_manager:id,name', 'shop', 'order_details']);
+        $order->load(['customer', 'payment_method', 'sales_manager', 'shop', 'order_details']);
         return new OrderDetailsResource($order);
     }
 
