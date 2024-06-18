@@ -25,7 +25,8 @@ return new class extends Migration
             $table->tinyInteger('shipment_status')->nullable();
 
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('payment_method_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('customer_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('payment_method_id')->constrained('payment_methods')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('sales_manager_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('shop_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();

@@ -21,10 +21,11 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SalesManagerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentMethodController;
 
 use App\Manager\ScriptManager;
 
-Route::get('test', [ScriptManager::class, 'getCountry']);
+Route::get('test', [ScriptManager::class, 'getLocationData']);
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -56,16 +57,17 @@ Route::group(['middleware' => ['auth:sanctum', 'auth:admin']], static function (
     Route::apiResource('sales-manager', SalesManagerController::class);
 });
 
-Route::group(['middleware' =>  ['auth:sanctum','auth:admin,sales_manager']], static function () {
+Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function () {
     Route::apiResource('product', ProductController ::class)->only('index', 'show');
     Route::apiResource('customer', CustomerController ::class);
     Route::apiResource('order', OrderController::class);
 
+    Route::get('get-payment-methods', [PaymentMethodController::class, 'index']);
     Route::get('get-category-list', [CategoryController::class, 'get_category_list']);
     Route::get('get-sub-category-list/{category_id}', [SubCategoryController::class, 'get_sub_category_list']);
     Route::get('get-product-list-for-barcode', [ProductController::class, 'get_product_list_for_barcode']);
 });
 
-Route::group(['middleware' =>  ['auth:sanctum','auth:sales_manager']], static function () {
+Route::group(['middleware' =>  ['auth:sales_manager']], static function () {
     //Route::apiResource('product', ProductController::class)->only('index', 'show');
 });

@@ -28,8 +28,6 @@ class StoreSalesManagerRequest extends FormRequest
             'email' => 'required|email',
             'bio' => 'max:1000',
             'photo' => 'required',
-            'nid_photo' => 'required',
-            'nid' => 'required',
             'password' => ['required', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised()],
 
             'address' => 'required|min:3|max:255',
@@ -38,7 +36,6 @@ class StoreSalesManagerRequest extends FormRequest
             'district_id' => 'required|numeric',
             'sub_district_id' => 'required|numeric',
             'area_id' => 'required|numeric',
-            'shop_id' => 'required|numeric',
         ];
     }
 }

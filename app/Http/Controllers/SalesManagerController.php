@@ -43,20 +43,6 @@ class SalesManagerController extends Controller
             );
         }
 
-        if($request->has('nid_photo')) {
-            $name = Str::slug($salesManagerData['name'] . now().'-nid');
-            $salesManagerData['nid_photo'] = ImageManager::processImageUpload(
-                $request->input('nid_photo'),
-                $name,
-                SalesManager::PHOTO_UPLOAD_PATH,
-                SalesManager::THUMB_PHOTO_UPLOAD_PATH,
-                SalesManager::PHOTO_WIDTH,
-                SalesManager::PHOTO_HEIGHT,
-                SalesManager::PHOTO_THUMB_WIDTH,
-                SalesManager::PHOTO_THUMB_HEIGHT
-            );
-        }
-
         try {
             DB::beginTransaction();
             $salesManager = SalesManager::create($salesManagerData);
@@ -67,10 +53,6 @@ class SalesManagerController extends Controller
             if (isset($salesManagerData['photo'])) {
                 ImageManager::deletePhoto(salesManager::PHOTO_UPLOAD_PATH, $salesManagerData['photo']);
                 ImageManager::deletePhoto(salesManager::THUMB_PHOTO_UPLOAD_PATH, $salesManagerData['photo']);
-            }
-            if (isset($salesManagerData['nid_photo'])) {
-                ImageManager::deletePhoto(salesManager::PHOTO_UPLOAD_PATH, $salesManagerData['nid_photo']);
-                ImageManager::deletePhoto(salesManager::THUMB_PHOTO_UPLOAD_PATH, $salesManagerData['nid_photo']);
             }
             Log::error('SALES_MANAGER_STORE_FAILED', ['salesManagerData' => $salesManagerData, 'addressData' => $addressData, 'exception' => $e]);
             DB::rollback();

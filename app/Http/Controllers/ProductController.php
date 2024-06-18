@@ -32,10 +32,6 @@ class ProductController extends Controller
                 (new ProductAttribute())->storeAttributeData($request->input('attributes'), $product);
             }
 
-            if($request->has('specifications')){
-                (new ProductSpecifications())->storeProductSpecification($request->input('specifications'), $product);
-            }
-
             DB::commit();
             return response()->json(['msg' => 'Product Created Successfully', 'cls' => 'success', 'product_id' => $product->id]);
         } catch (\Throwable $e) {

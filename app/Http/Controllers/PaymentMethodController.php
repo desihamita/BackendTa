@@ -14,7 +14,8 @@ class PaymentMethodController extends Controller
      */
     public function index()
     {
-        //
+        $paymentMethods = (new PaymentMethod())->getPaymentMethodList();
+        return response()->json($paymentMethods);
     }
 
     /**

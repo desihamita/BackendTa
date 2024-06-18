@@ -11,39 +11,25 @@ use App\Http\Resources\OrderListResource;
 
 class OrderController extends Controller
 {
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $orders = (new Order())->getAllOrders($request->all(), auth());
         return OrderListResource::collection($orders);
     }
 
-    public function store(StoreOrderRequest $request)
-    {
-        try {
-            DB::beginTransaction();
-            $order = (new Order)->placeOrder($request->all(), auth()->user());
-            DB::commit();
-            return response()->json(['msg' => 'Order Placed Created Successfully', 'cls' => 'success', 'flag' => true]);
-        } catch (\Throwable $th) {
-            Log::error('ORDER_PLACED_FAILED', ['msg' => $th->getMessage(), $th]);
-            DB::rollback();
-            return response()->json(['msg' => $e->getMessage(), 'cls' => 'warning']);
-        }
+    public function store(StoreOrderRequest $request) {
+        return (new Order)->placeOrder($request->all(), auth()->user());
     }
 
-    public function show(Order $order)
-    {
+    public function show(Order $order) {
         $order->load(['customer', 'payment_method', 'sales_manager', 'shop', 'order_details']);
         return new OrderDetailsResource($order);
     }
 
-    public function update(UpdateOrderRequest $request, Order $order)
-    {
-        //
+    public function update(UpdateOrderRequest $request, Order $order) {
+        // Update order logic
     }
 
-    public function destroy(Order $order)
-    {
-        //
+    public function destroy(Order $order) {
+        // Delete order logic
     }
 }

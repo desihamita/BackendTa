@@ -15,3 +15,4 @@ class ShopSeeder extends Seeder
         //
     }
 }
+

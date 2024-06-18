@@ -28,8 +28,6 @@ class SalesManager extends Model
         'status',
         'bio',
         'photo',
-        'nid_photo',
-        'nid',
         'user_id',
         'shop_id',
         'password'
@@ -57,8 +55,6 @@ class SalesManager extends Model
         $sales_manager['phone'] = $input['phone'] ?? null;
         $sales_manager['status'] = isset($input['status']) && $input['status'] !== 0 ? (int)$input['status'] : self::STATUS_INACTIVE;
         $sales_manager['user_id'] = $auth->id();
-        $sales_manager['shop_id'] = $input['shop_id'] ?? null;
-        $sales_manager['nid'] = $input['nid'];
         $sales_manager['password'] = Hash::make($input['password']);
         return $sales_manager;
     }
@@ -72,8 +68,7 @@ class SalesManager extends Model
             'address.district:id,name',
             'address.subDistrict:id,name',
             'address.area:id,name',
-            'user:id,name',
-            'shop:id,name'
+            'user:id,name'
         );
 
         if (!empty($input['search'])) {
@@ -97,11 +92,6 @@ class SalesManager extends Model
     final public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    final public function shop(): BelongsTo
-    {
-        return $this->belongsTo(Shop::class);
     }
 
     final public function getUserByEmailOrPhone(array $input): Builder|Model|null

@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Manager\ImageManager;
+use App\Manager\PriceManager;
 use App\Models\ProductPhoto;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -40,11 +41,8 @@ class ProductListResource extends JsonResource
             'created_at' => $this->created_at->toDayDateTimeString(),
             'updated_at' => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated at',
 
-            'brand' => $this->brand?->name,
             'category' => $this->category?->name,
             'sub_category' => $this->sub_category?->name,
-            'country' => $this->country?->name,
-            'supplier' =>  $this->supplier ? $this->supplier?->name . ' ' .$this->supplier?->phone : null,
             'created_by' => $this->created_by?->name,
             'updated_by' => $this->updated_by?->name,
             'primary_photo' => ImageManager::prepareImageUrl(ProductPhoto::THUMB_PHOTO_UPLOAD_PATH, $this->primary_photo?->photo ?? ''),

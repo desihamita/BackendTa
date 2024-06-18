@@ -29,9 +29,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('category_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
 
-            $table->unsignedBigInteger('brand_id')->nullable();
             $table->unsignedBigInteger('sub_category_id')->nullable();
-            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->timestamps();
         });
     }

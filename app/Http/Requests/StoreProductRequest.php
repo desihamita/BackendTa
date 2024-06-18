@@ -33,13 +33,9 @@ class StoreProductRequest extends FormRequest
             'stock' => 'numeric|required',
             'description' => 'required|max:1000|min:10',
             'attributes' => 'array',
-            'specifications' => 'array',
-            
-            'brand_id' => 'numeric',
-            'country_id' => 'numeric',
+
             'category_id' => 'numeric',
             'sub_category_id' => 'numeric',
-            'supplier_id' => 'numeric',
         ];
     }
 }

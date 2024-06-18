@@ -9,7 +9,6 @@ use App\Models\Area;
 use App\Models\Country;
 
 class ScriptManager {
-
     // url provinsi = https://shopee.co.id/api/v4/location/get_child_division_list?division_id=0&use_case=shopee.account
 
     // url kota = https://shopee.co.id/api/v4/location/get_child_division_list?division_id=101644386189719&use_case=shopee.account
@@ -20,7 +19,7 @@ class ScriptManager {
 
     public function getLocationData()
     {
-        ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', 6000);
 
         $url = 'https://shopee.co.id/api/v4/location/get_child_division_list?division_id=0&use_case=shopee.account';
 
@@ -28,7 +27,7 @@ class ScriptManager {
         $divisions = json_decode($response->body(), true);
 
         foreach ($divisions['data']['divisions'] as $key => $division) {
-            if($key == 26) {
+            if($key == 8) {
                 $division_data['name'] = $division['division_name'];
                 $division_data['original_id'] = $division['id'];
                 $created_div = Division::create($division_data);

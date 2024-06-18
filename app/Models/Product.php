@@ -22,11 +22,8 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'brand_id',
         'category_id' ,
         'sub_category_id',
-        'supplier_id',
-        'country_id',
         'name',
         'slug',
         'status',
@@ -54,11 +51,8 @@ class Product extends Model
     private function prepareData(array $input, int $auth_id): array
     {
         return [
-            'brand_id' => $input['brand_id'] ?? '',
             'category_id' => $input['category_id'] ?? '',
             'sub_category_id' => $input['sub_category_id'] ?? '',
-            'supplier_id' => $input['supplier_id'] ?? '',
-            'country_id' => $input['country_id'] ?? '',
             'created_by_id' => $auth_id,
             'updated_by_id' => $auth_id,
 
@@ -88,8 +82,6 @@ class Product extends Model
         $query = self::query()->with([
             'category:id,name',
             'sub_category:id,name',
-            'brand:id,name',
-            'supplier:id,name,phone',
             'created_by:id,name',
             'updated_by:id,name',
             'primary_photo',
@@ -121,7 +113,6 @@ class Product extends Model
             'discount_fixed',
             'discount_percent',
             'discount_start',
-
         );
 
         if(!empty(isset($input['name']))) {
@@ -144,21 +135,6 @@ class Product extends Model
     final public function sub_category(): BelongsTo
     {
         return $this->belongsTo(SubCategory::class, 'sub_category_id');
-    }
-
-    final public function brand(): BelongsTo
-    {
-        return $this->belongsTo(Brand::class, 'brand_id');
-    }
-
-    final public function country(): BelongsTo
-    {
-        return $this->belongsTo(Country::class, 'country_id');
-    }
-
-    final public function supplier(): BelongsTo
-    {
-        return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 
     final public function created_by(): BelongsTo
