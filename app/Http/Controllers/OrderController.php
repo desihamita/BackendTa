@@ -16,8 +16,18 @@ class OrderController extends Controller
         return OrderListResource::collection($orders);
     }
 
-    public function store(StoreOrderRequest $request) {
-        return (new Order)->placeOrder($request->all(), auth()->user());
+    public function store(StoreOrderRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $order = (new Order)->placeOrder($request->all(), auth()->user());
+            DB::commit();
+            return response()->json(['msg' => 'Order Placed Successfully', 'cls' => 'success', 'flag' =>1]);
+        } catch (\Throwable $th) {
+            Log::error('ORDER_PLACED_FAILED', ['message' => $th->getMessage(),$th]);
+            DB::rollback();
+            return response()->json(['msg' => $th->getMessage(), 'cls' => 'warning']);
+        }
     }
 
     public function show(Order $order) {

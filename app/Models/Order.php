@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Manager\OrderManager;
+use App\Models\Transaction;
 
 class Order extends Model
 {
@@ -45,6 +46,7 @@ class Order extends Model
 
         $order = self::query()->create($order_data['order_data']);
         (new OrderDetails())->storeOrderDetails($order_data['order_details'], $order);
+        (new Transaction())->storeTransaction($input, $order, $auth);
     }
 
     public function prepareData(array $input, $auth) {

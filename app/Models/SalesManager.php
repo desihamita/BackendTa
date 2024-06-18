@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Transaction;
 use App\Models\Address;
 use App\Models\User;
 
@@ -97,5 +98,10 @@ class SalesManager extends Model
     final public function getUserByEmailOrPhone(array $input): Builder|Model|null
     {
         return self::query()->where('email', $input['email'])->orWhere('phone', $input['email'])->first();
+    }
+
+    final public function transaction(): MorphOne
+    {
+        return $this->morphOne(Transaction::class, 'transactionable');
     }
 }
