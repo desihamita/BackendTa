@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 use App\Models\Category;
 use App\Models\Brand;
@@ -155,5 +156,11 @@ class Product extends Model
     final public function product_attributes(): HasMany
     {
         return $this->hasMany(ProductAttribute::class);
+    }
+
+    public function getAllProduct($columns = ['*'])
+    {
+        $products = DB::table('products')->select($columns)->get();
+        return collect($products);
     }
 }

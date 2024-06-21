@@ -41,7 +41,7 @@ class AuthController extends Controller
 
             $user_data['token'] = $user->createToken($user->email)->plainTextToken;
             $user_data['name'] = $user->name;
-            $user_data['phone'] = $user->phone; 
+            $user_data['phone'] = $user->phone;
             $user_data['photo'] = $user->photo;
             $user_data['email'] = $user->email;
             $user_data['role'] = $role;

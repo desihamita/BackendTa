@@ -22,6 +22,7 @@ use App\Http\Controllers\SalesManagerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\SalesReportController;
 
 use App\Manager\ScriptManager;
 
@@ -66,8 +67,10 @@ Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function ()
     Route::get('get-category-list', [CategoryController::class, 'get_category_list']);
     Route::get('get-sub-category-list/{category_id}', [SubCategoryController::class, 'get_sub_category_list']);
     Route::get('get-product-list-for-barcode', [ProductController::class, 'get_product_list_for_barcode']);
+    Route::get('get-sales-reports', [SalesReportController::class, 'get_sales_reports']);
 });
 
+Route::get('get-sales-reports', [SalesReportController::class, 'get_sales_reports']);
 Route::group(['middleware' =>  ['auth:sales_manager']], static function () {
     //Route::apiResource('product', ProductController::class)->only('index', 'show');
 });
