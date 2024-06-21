@@ -8,6 +8,9 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\OrderListResource;
+use App\Http\Resources\OrderDetailsResource;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -22,16 +25,26 @@ class OrderController extends Controller
             DB::beginTransaction();
             $order = (new Order)->placeOrder($request->all(), auth()->user());
             DB::commit();
-            return response()->json(['msg' => 'Order Placed Successfully', 'cls' => 'success', 'flag' =>1]);
+            return response()->json(['msg' => 'Order Placed Successfully', 'cls' => 'success', 'flag' => 1, 'order_id' => $order->id]);
         } catch (\Throwable $th) {
-            Log::error('ORDER_PLACED_FAILED', ['message' => $th->getMessage(),$th]);
+            Log::info('ORDER_PLACED_FAILED', ['message' => $th->getMessage(),$th]);
             DB::rollback();
             return response()->json(['msg' => $th->getMessage(), 'cls' => 'warning']);
         }
     }
 
     public function show(Order $order) {
-        $order->load(['customer', 'payment_method', 'sales_manager', 'shop', 'order_details']);
+        $order->load([
+            'customer',
+            'payment_method',
+            'sales_manager',
+            'shop',
+            'order_details',
+            'transactions',
+            'transactions.customer',
+            'transactions.payment_method',
+            'transactions.transactionable',
+        ]);
         return new OrderDetailsResource($order);
     }
 

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
@@ -43,4 +45,19 @@ class Transaction extends Model
     {
         return $this->morphTo();
     }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function payment_method(): BelongsTo
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    // public function admin()
+    // {
+    //     return $this->morphOne(PaymentMethod::class);
+    // }
 }
