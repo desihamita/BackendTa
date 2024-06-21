@@ -101,4 +101,14 @@ class Order extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function getAllOrderForReport(bool $is_admin, int $sales_admin_id, array $columns = ['*'])
+    {
+        $query = DB::table('orders')->select($columns);
+        if (!$is_admin) {
+            $query->where('sales_manager_id', $sales_admin_id);
+        }
+        $orders = $query->get();
+        return collect($orders);
+    }
 }
