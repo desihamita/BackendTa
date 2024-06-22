@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\BrandListResource;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\BrandEditResource;
+use Illuminate\Support\Facades\Schema;
 
 class BrandController extends Controller
 {
@@ -89,5 +90,11 @@ class BrandController extends Controller
     {
         $brands = (new Brand())->getBrandIdAndName();
         return response()->json($brands);
+    }
+
+    public function get_brand_column()
+    {
+        $columns = Schema::getColumnListing('brands');
+        return response()->json($columns);
     }
 }

@@ -60,8 +60,17 @@ Route::group(['middleware' => ['auth:sanctum', 'auth:admin']], static function (
 
 Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function () {
     Route::apiResource('product', ProductController ::class)->only('index', 'show');
+    Route::apiResource('attribute', AttributeController::class)->only('index', 'show');
     Route::apiResource('customer', CustomerController ::class);
     Route::apiResource('order', OrderController::class);
+
+    Route::get('get-product-column', [ProductController ::class, 'get_product_column']);
+    Route::get('get-category-column', [CategoryController ::class, 'get_category_column']);
+    Route::get('get-sub-category-column', [SubCategoryController ::class, 'get_sub_category_column']);
+    Route::get('get-brand-column', [BrandController ::class, 'get_brand_column']);
+    Route::get('get-supplier-column', [SupplierController ::class, 'get_supplier_column']);
+    Route::get('get-atribute-column', [AttributeController ::class, 'get_attribute_column']);
+    Route::get('get-shop-column', [ShopController ::class, 'get_shop_column']);
 
     Route::get('get-payment-methods', [PaymentMethodController::class, 'index']);
     Route::get('get-category-list', [CategoryController::class, 'get_category_list']);
@@ -70,7 +79,6 @@ Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function ()
     Route::get('get-sales-reports', [SalesReportController::class, 'get_sales_reports']);
 });
 
-Route::get('get-sales-reports', [SalesReportController::class, 'get_sales_reports']);
 Route::group(['middleware' =>  ['auth:sales_manager']], static function () {
     //Route::apiResource('product', ProductController::class)->only('index', 'show');
 });

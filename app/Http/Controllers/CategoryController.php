@@ -13,6 +13,8 @@ use App\Http\Resources\CategoryEditResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Schema;
+
 
 class CategoryController extends Controller
 {
@@ -86,5 +88,11 @@ class CategoryController extends Controller
         $photo_name = ImageManager::uploadImage($name, $width, $height, $path, $file);
         ImageManager::uploadImage($name, $width_thumb, $height__thumb, $path_thumb, $file);
         return $photo_name;
+    }
+
+    public function get_category_column()
+    {
+        $columns = Schema::getColumnListing('categories');
+        return response()->json($columns);
     }
 }

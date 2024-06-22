@@ -14,6 +14,7 @@ use App\Http\Resources\SubCategoryResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\SubCategoryEditResource;
+use Illuminate\Support\Facades\Schema;
 
 class SubCategoryController extends Controller
 {
@@ -88,5 +89,11 @@ class SubCategoryController extends Controller
     {
         $Sub_categories = (new SubCategory())->getSubCategoryIdAndName($category_id);
         return response()->json($Sub_categories);
+    }
+
+    public function get_sub_category_column()
+    {
+        $columns = Schema::getColumnListing('sub_categories');
+        return response()->json($columns);
     }
 }

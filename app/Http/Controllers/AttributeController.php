@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\AttributeListResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class AttributeController extends Controller
 {
@@ -48,5 +49,11 @@ class AttributeController extends Controller
     {
         $attributes = (new Attribute())->getAttributeListWithValue();
         return response()->json($attributes);
+    }
+
+    public function get_attributes_column()
+    {
+        $columns = Schema::getColumnListing('categories');
+        return response()->json($columns);
     }
 }

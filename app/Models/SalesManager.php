@@ -95,7 +95,12 @@ class SalesManager extends Model
         return $this->belongsTo(User::class);
     }
 
-    final public function getUserByEmailOrPhone(array $input): Builder|Model|null
+    // final public function getUserByEmailOrPhone(array $input): Builder|Model|null
+    // {
+    //     return self::query()->where('email', $input['email'])->orWhere('phone', $input['email'])->first();
+    // }
+    
+    final public function getUserByEmailOrPhone(array $input): ?self
     {
         return self::query()->where('email', $input['email'])->orWhere('phone', $input['email'])->first();
     }

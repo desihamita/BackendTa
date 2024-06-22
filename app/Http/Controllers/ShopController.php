@@ -16,6 +16,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\ShopListResource;
 use App\Http\Resources\ShopEditResource;
+use Illuminate\Support\Facades\Schema;
 
 class ShopController extends Controller
 {
@@ -117,10 +118,15 @@ class ShopController extends Controller
         }
     }
 
-
     final public function get_shop_list(): JsonResponse
     {
         $shops = (new Shop())->getShopListIdName();
         return response()->json($shops);
+    }
+
+    public function get_shop_column()
+    {
+        $columns = Schema::getColumnListing('shops');
+        return response()->json($columns);
     }
 }

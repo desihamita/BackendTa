@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\ProductListResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\ProductListForBarcodeResource;
+use Illuminate\Support\Facades\Schema;
 
 class ProductController extends Controller
 {
@@ -59,5 +60,11 @@ class ProductController extends Controller
     {
         $products = (new Product())->getProductForBarcode($request->all());
         return ProductListForBarcodeResource::collection($products);
+    }
+
+    public function get_product_column()
+    {
+        $columns = Schema::getColumnListing('products');
+        return response()->json($columns);
     }
 }

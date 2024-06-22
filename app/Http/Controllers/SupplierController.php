@@ -15,6 +15,7 @@ use App\Http\Resources\SupplierListResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Resources\SupplierEditResource;
+use Illuminate\Support\Facades\Schema;
 
 class SupplierController extends Controller
 {
@@ -123,5 +124,11 @@ class SupplierController extends Controller
     {
         $suppliers = (new Supplier())->getSupplierSelectList();
         return response()->json($suppliers);
+    }
+
+    public function get_supplier_column()
+    {
+        $columns = Schema::getColumnListing('suppliers');
+        return response()->json($columns);
     }
 }

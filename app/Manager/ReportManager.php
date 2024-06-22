@@ -2,8 +2,10 @@
 
 namespace App\Manager;
 
-use App\Models\Product;
 use Illuminate\Support\Collection;
+use App\Models\Product;
+use App\Models\Order;
+use Carbon\Carbon;
 
 class ReportManager{
     public const LOW_STOCK_ALERT = 5;
@@ -88,7 +90,7 @@ class ReportManager{
 
     private function caluculatePurchaseToday()
     {
-        $product_buy_today = $this->products->whereDateBetween('created_at', [Carbon::today()->startOfDay(), Carbon::today()->endOfDay()]);
+        $product_buy_today = $this->products->whereBetween('created_at', [Carbon::today()->startOfDay(), Carbon::today()->endOfDay()]);
         foreach ($product_buy_today as $product) {
             $this->total_purchase_today += ($product->cost * $product->stock);
         }
@@ -96,7 +98,7 @@ class ReportManager{
 
     private function caluculatePossibleProfit()
     {
-        $this->possible_profit = $this->sale_stock_price - $this->buy_stock_price;
+         $this->possible_profit = $this->sale_stock_price - $this->buy_stock_price;
     }
 
     private function getOrders()
@@ -111,6 +113,6 @@ class ReportManager{
 
     private function calculateTotalSaleToday()
     {
-        $this->total_sale_today = $this->orders->whereDateBetween('created_at', [Carbon::today()->startOfDay(), Carbon::today()->endOfDay()])->sum('total');
+        $this->total_sale_today = $this->orders->whereBetween('created_at', [Carbon::today()->startOfDay(), Carbon::today()->endOfDay()])->sum('total');
     }
 }
