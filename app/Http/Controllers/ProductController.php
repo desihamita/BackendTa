@@ -14,6 +14,7 @@ use App\Http\Resources\ProductListResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\ProductListForBarcodeResource;
 use Illuminate\Support\Facades\Schema;
+use App\Http\Resources\ProductDetailsResource;
 
 class ProductController extends Controller
 {
@@ -43,7 +44,19 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        //
+        $product->load([
+            'category:id,name',
+            'sub_category:id,name',
+            'photos:id,photo,product_id',
+            'created_by:id,name',
+            'updated_by:id,name',
+            'primary_photo',
+            'product_attributes',
+            'product_attributes.attributes',
+            'product_attributes.values',
+        ]);
+
+        return new ProductDetailsResource($product);
     }
 
     public function update(UpdateProductRequest $request, Product $product)
@@ -65,6 +78,10 @@ class ProductController extends Controller
     public function get_product_column()
     {
         $columns = Schema::getColumnListing('products');
-        return response()->json($columns);
+        $formated_columns = [];
+        foreach ($columns as $column) {
+            $formated_columns[] = ['id' => $column, 'name' => ucfirst(str_replace('_', ' ', $column))];
+        }
+        return response()->json($formated_columns);
     }
 }
