@@ -27,7 +27,7 @@ class ScriptManager {
         $divisions = json_decode($response->body(), true);
 
         foreach ($divisions['data']['divisions'] as $key => $division) {
-            if($key == 8) {
+            if($key == 5) {
                 $division_data['name'] = $division['division_name'];
                 $division_data['original_id'] = $division['id'];
                 $created_div = Division::create($division_data);

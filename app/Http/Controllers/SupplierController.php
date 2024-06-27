@@ -79,7 +79,7 @@ class SupplierController extends Controller
                 $name,
                 Supplier::IMAGE_UPLOAD_PATH,
                 Supplier::THUMB_IMAGE_UPLOAD_PATH,
-                Supplier::LOGO_WIDTH,
+                Supplier::LOGO_WIDTH,         
                 Supplier::LOGO_HEIGHT,
                 Supplier::LOGO_THUMB_WIDTH,
                 Supplier::LOGO_THUMB_HEIGHT,

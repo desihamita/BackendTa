@@ -19,8 +19,6 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0);
             $table->text('bio')->nullable();
             $table->string('photo')->nullable();
-            $table->string('nid_photo')->nullable();
-            $table->string('nid')->nullable();
             $table->string('password')->nullable();
 
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();

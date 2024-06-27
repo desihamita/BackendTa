@@ -22,8 +22,17 @@ class UpdateAttributeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:3|max:255|unique:attributes,name,'.$this->id,
-            'status' => 'required|numeric'
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'sku' => 'required|string|max:255',
+            'stock' => 'required|integer',
+            'description' => 'nullable|string',
+            'status' => 'required|boolean',
+            'brand_id' => 'required|integer|exists:brands,id',
+            'supplier_id' => 'required|integer|exists:suppliers,id',
+            'category_id' => 'required|integer|exists:categories,id',
+            'sub_category_id' => 'required|integer|exists:sub_categories,id',
         ];
 
     }

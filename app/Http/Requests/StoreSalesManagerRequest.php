@@ -36,6 +36,8 @@ class StoreSalesManagerRequest extends FormRequest
             'district_id' => 'required|numeric',
             'sub_district_id' => 'required|numeric',
             'area_id' => 'required|numeric',
+            'shop_id' => 'required|numeric',
         ];
-    }
+
+   }
 }

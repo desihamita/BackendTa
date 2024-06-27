@@ -61,12 +61,38 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $product->update($request->all());
+            
+            if($request->has('attributes')){
+                $product->product_attributes()->delete();
+                (new ProductAttribute())->storeAttributeData($request->input('attributes'), $product);
+            }
+    
+            DB::commit();
+            return response()->json(['msg' => 'Product Updated Successfully', 'cls' => 'success']);
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return response()->json(['msg' => $e->getMessage(), 'cls' => 'error']);
+        }
     }
 
     public function destroy(Product $product)
     {
-        //
+        try {
+            DB::beginTransaction();
+            
+            $product->product_attributes()->delete();
+            $product->photos()->delete();
+            $product->delete();
+            
+            DB::commit();
+            return response()->json(['msg' => 'Product Deleted Successfully', 'cls' => 'success']);
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return response()->json(['msg' => $e->getMessage(), 'cls' => 'error']);
+        }
     }
 
     public function get_product_list_for_barcode(Request $request)
