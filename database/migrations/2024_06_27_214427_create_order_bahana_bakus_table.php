@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('order_ingredients', function (Blueprint $table) {
             $table->id();
             $table->integer('sub_total')->nullable();
-            $table->integer('discount')->nullable();
             $table->integer('total')->nullable();
             $table->integer('quantity')->nullable();
             $table->integer('paid_amount')->nullable();
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->tinyInteger('payment_status')->nullable();
             $table->tinyInteger('shipment_status')->nullable();
 
-            $table->foreignId('customer_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('supplier_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('payment_method_id')->constrained('payment_methods')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('sales_manager_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('shop_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
@@ -37,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('order_ingredients');
     }
 };

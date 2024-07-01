@@ -21,7 +21,7 @@ class AttributeListResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'price' => PriceManager::CURRENCY_SYMBOL . number_format($this->price),
+            'price' => $this->price,
             'sku' => $this->sku,
             'stock' => $this->stock,
             'description' => $this->description,

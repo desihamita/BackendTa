@@ -23,6 +23,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\SalesReportController;
+use App\Http\Controllers\OrderBahanaBakuController;
 
 use App\Manager\ScriptManager;
 
@@ -58,10 +59,12 @@ Route::group(['middleware' => ['auth:sanctum', 'auth:admin']], static function (
 });
 
 Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function () {
+    Route::apiResource('supplier', SupplierController::class)->only('index', 'show');
     Route::apiResource('product', ProductController ::class)->only('index', 'show');
     Route::apiResource('attribute', AttributeController::class)->only('index', 'show');
     Route::apiResource('customer', CustomerController ::class);
     Route::apiResource('order', OrderController::class);
+    Route::apiResource('order-bahan-baku', OrderBahanaBakuController::class);
 
     Route::get('get-product-column', [ProductController ::class, 'get_product_column']);
     Route::get('get-category-column', [CategoryController ::class, 'get_category_column']);

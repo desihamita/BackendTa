@@ -19,6 +19,7 @@ use App\Models\AttributeValue;
 
 class Attribute extends Model
 {
+
     use HasFactory;
 
     public const IMAGE_UPLOAD_PATH = 'images/uploads/attribute/';
@@ -31,6 +32,10 @@ class Attribute extends Model
 
     public const STATUS_ACTIVE = 1;
     public const STATUS_INACTIVE = 0;
+
+    protected $casts = [
+        'price' => 'integer',
+    ];
 
     protected $fillable = [
         'name',
@@ -82,6 +87,7 @@ class Attribute extends Model
             'name' => $input['name'] ?? '',
             'slug' => $input['name'] ?? '',
             'price' => $input['price'] ?? '',
+            'photo' => $input['photo'] ?? '',
             'stock' => $input['stock'] ?? '',
             'sku' => $input['sku'] ?? '',
             'description' => $input['description'] ?? '',
@@ -89,16 +95,35 @@ class Attribute extends Model
         ];
     }
 
-    final public function getAttributeList(): LengthAwarePaginator
+    final public function getAttributeList(array $input): LengthAwarePaginator
     {
-        return self::query()->with([
-            'value',
-            'value.user:id,name',
+        $per_page = $input['per_page'] ?? 10;
+        $query = self::query()->with([
             'category:id,name',
             'sub_category:id,name',
             'brand:id,name',
-            'supplier:id,name'
-        ])->orderBy('updated_at', 'desc')->paginate(10);
+            'supplier:id,name',
+            'created_by:id,name',
+            'updated_by:id,name',
+        ]);
+
+        if (!empty($input['search'])) {
+            $query->where(function($q) use ($input) {
+                $q->where('name', 'like', '%'.$input['search'].'%')
+                ->orWhere('sku', 'like', '%'.$input['search'].'%');
+            });
+        }
+
+        if (!empty($input['order_by'])) {
+            $query->orderBy($input['order_by'], $input['direction'] ?? 'asc');
+        }
+
+        return $query->paginate($per_page);
+    }
+
+    final public function getAttributeById(int $id): Builder|Collection|Model|null
+    {
+        return self::query()->findOrFail($id);
     }
 
     final public function created_by(): BelongsTo

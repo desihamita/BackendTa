@@ -47,4 +47,11 @@ class PriceManager{
     {
         return self::CURRENCY_SYMBOL.number_format($price, 2);
     }
+
+    public static function calculate_sell_price_bahan_baku(
+        int $price,
+    ) {
+        return ['price' => $price, 'symbol' => self::CURRENCY_SYMBOL];
+    }
+
 }
