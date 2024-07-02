@@ -22,8 +22,8 @@ class TransactionBahanBaku extends Model
 
     public function storeTransaction($input, $orderBahanBaku, $auth)
     {
-        $transaction_bahan_baku_data = $this->prepareData($input, $orderBahanBaku, $auth);
-        return self::query()->create($transaction_bahan_baku_data);
+        $transactionBahanBaku_data = $this->prepareData($input, $orderBahanBaku, $auth);
+        return self::query()->create($transactionBahanBaku_data);
     }
 
     public function prepareData($input, $orderBahanBaku, $auth)

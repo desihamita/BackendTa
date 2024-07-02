@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\OrderBahanaBaku;
 
 class OrderBahanBakuListResource extends JsonResource
 {
@@ -16,9 +17,9 @@ class OrderBahanBakuListResource extends JsonResource
     {
         $payment_status = 'Unpaid';
 
-        if($this->payment_status == Order::PAYMENT_STATUS_PAID) {
+        if($this->payment_status == OrderBahanaBaku::PAYMENT_STATUS_PAID) {
             $payment_status = 'Paid';
-        } else if($this->payment_status == Order::PAYMENT_STATUS_PARTIALLY_PAID) {
+        } else if($this->payment_status == OrderBahanaBaku::PAYMENT_STATUS_PARTIALLY_PAID) {
             $payment_status = 'Partially Paid';
         }
 
@@ -30,10 +31,11 @@ class OrderBahanBakuListResource extends JsonResource
 
             'supplier_name' => $this->supplier?->name,
             'supplier_phone' => $this->supplier?->phone,
+            'supplier_email' => $this->supplier?->email,
 
             'order_number' => $this->order_number,
             'order_status' => $this->order_status,
-            'order_status_string' => $this->order_status === Order::STATUS_COMPLETED ? 'Completed' : 'Pending',
+            'order_status_string' => $this->order_status === OrderBahanaBaku::STATUS_COMPLETED ? 'Completed' : 'Pending',
 
             'payment_method' => $this->payment_method?->name,
             'payment_status' => $this->payment_status,

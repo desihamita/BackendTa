@@ -9,14 +9,15 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\OrderBahanaBaku;
-use App\Http\Resources\OrderBahanaBakuListResource;
+use App\Http\Resources\OrderBahanBakuListResource;
+use App\Http\Resources\OrderBahanBakuDetailsResource;
 
 class OrderBahanaBakuController extends Controller
 {
     public function index(Request $request)
     {
-        $orders = (new OrderBahanaBaku())->getAllOrders($request->all(), auth());
-        return OrderBahanaBakuListResource::collection($orders);
+        $orderIngredients = (new OrderBahanaBaku())->getAllOrders($request->all(), auth());
+        return OrderBahanBakuListResource::collection($orderIngredients);
     }
 
     public function store(StoreOrderBahanaBakuRequest $request)
@@ -33,9 +34,22 @@ class OrderBahanaBakuController extends Controller
         }
     }
 
-    public function show(OrderBahanaBaku $orderBahanaBaku)
-    {
-        // Implement show functionality if needed
+    public function show(OrderBahanaBaku $orderBahanBaku) {
+        $orderBahanBaku->load([
+            'supplier',
+            'payment_method',
+            'sales_manager',
+            'shop',
+            'order_details.brand',
+            'order_details.category',
+            'order_details.sub_category',
+            'order_details.supplier',
+            'transactions',
+            'transactions.supplier',
+            'transactions.payment_method',
+            'transactions.transactionable',
+        ]);
+        return new OrderBahanBakuDetailsResource($orderBahanBaku);
     }
 
     public function update(UpdateOrderBahanaBakuRequest $request, OrderBahanaBaku $orderBahanaBaku)

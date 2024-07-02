@@ -47,7 +47,7 @@ class OrderDetails extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function sub_category() {
+    public function sub_category() {  
         return $this->belongsTo(SubCategory::class);
     }
 

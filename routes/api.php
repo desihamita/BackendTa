@@ -24,6 +24,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\OrderBahanaBakuController;
+use App\Http\Controllers\OutboundItemsController;
 
 use App\Manager\ScriptManager;
 
@@ -65,6 +66,7 @@ Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function ()
     Route::apiResource('customer', CustomerController ::class);
     Route::apiResource('order', OrderController::class);
     Route::apiResource('order-bahan-baku', OrderBahanaBakuController::class);
+    Route::apiResource('outbound-items', OutboundItemsController::class);
 
     Route::get('get-product-column', [ProductController ::class, 'get_product_column']);
     Route::get('get-category-column', [CategoryController ::class, 'get_category_column']);

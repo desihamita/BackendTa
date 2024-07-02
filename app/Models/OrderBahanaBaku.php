@@ -43,14 +43,14 @@ class OrderBahanaBaku extends Model
     }
 
     public function placeOrder(array $input, $auth) {
-        $order_bahan_baku_data = $this->prepareData($input, $auth);
+        $orderBahanBaku_data = $this->prepareData($input, $auth);
 
-        if (isset($order_bahan_baku_data['error_description'])) {
-            return $order_bahan_baku_data;
+        if (isset($orderBahanBaku_data['error_description'])) {
+            return $orderBahanBaku_data;
         }
 
-        $orderBahanBaku = self::query()->create($order_bahan_baku_data['order_data']);
-        (new OrderBahanBakuDetails())->storeOrderDetails($order_bahan_baku_data['order_details'], $orderBahanBaku);
+        $orderBahanBaku = self::query()->create($orderBahanBaku_data['order_data']);
+        (new OrderBahanBakuDetails())->storeOrderDetails($orderBahanBaku_data['order_details'], $orderBahanBaku);
         (new TransactionBahanBaku())->storeTransaction($input, $orderBahanBaku, $auth);
         return $orderBahanBaku;
     }
@@ -98,11 +98,11 @@ class OrderBahanaBaku extends Model
     }
 
     public function order_details() {
-        return $this->hasMany(OrderDetails::class);
+        return $this->hasMany(OrderBahanBakuDetails::class, 'order_ingredients_id');
     }
 
     public function transactions() {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(TransactionBahanBaku::class, 'order_bahan_baku_id');
     }
 
     public function getAllOrderForReport(bool $is_admin, int $sales_admin_id, array $columns = ['*']) {

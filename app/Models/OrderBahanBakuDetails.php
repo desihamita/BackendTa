@@ -10,13 +10,13 @@ class OrderBahanBakuDetails extends Model
 {
     use HasFactory;
 
-    protected $table = 'order_bahan_baku_details';
+    protected $table = 'order_ingredient_details';
     protected $guarded = [];
 
-    public function storeOrderDetails(array $order_bahan_baku_details, $orderBahanBaku) {
-        foreach ($order_bahan_baku_details as $attribute) {
-            $order_bahan_baku_details_data = $this->prepareData($attribute, $orderBahanBaku);
-            self::query()->create($order_bahan_baku_details_data);
+    public function storeOrderDetails(array $orderBahanBaku_details, $orderBahanBaku) {
+        foreach ($orderBahanBaku_details as $attribute) {
+            $orderBahanBaku_details = $this->prepareData($attribute, $orderBahanBaku);
+            self::query()->create($orderBahanBaku_details);
         }
     }
 
@@ -24,10 +24,9 @@ class OrderBahanBakuDetails extends Model
         $sale_price_data = PriceManager::calculate_sell_price_bahan_baku($attribute->price);
 
         return [
-            'orderBahanBaku_id' => $orderBahanBaku->id,
+            'order_ingredients_id' => $orderBahanBaku->id,
             'name' => $attribute->name,
             'price' => $attribute->price,
-            'sale_price' => $sale_price_data['price'],
             'sku' => $attribute->sku,
             'quantity' => $attribute->quantity,
             'photo' => $attribute->photo,
