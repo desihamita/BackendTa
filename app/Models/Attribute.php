@@ -168,4 +168,25 @@ class Attribute extends Model
             ->with('value:id,name,attribute_id')
             ->get();
     }
+
+    public function getBahanBakuForBarcode($input)
+    {
+        $query = self::query()->select(
+            'id',
+            'name',
+            'sku',
+            'price',
+        );
+
+        if(!empty(isset($input['name']))) {
+            $query->where('name', 'like', '%'.$input['name'].'%');
+        }
+        if(!empty(isset($input['category_id']))) {
+            $query->where('category_id', $input['category_id']);
+        }
+        if(!empty(isset($input['sub_category_id']))) {
+            $query->where('sub_category_id', $input['sub_category_id']);
+        }
+        return $query->get();
+    }
 }

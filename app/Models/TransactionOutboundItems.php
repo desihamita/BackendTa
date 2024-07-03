@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class TransactionOutboundItems extends Model
 {
     use HasFactory;
 
@@ -31,7 +29,7 @@ class Transaction extends Model
             'transaction_type' => self::CREDIT,
             'status' => self::CREDIT,
 
-            'trx_id' => $input['order_summary']['trx_id'],
+            'trxOutbound_id' => $input['order_summary']['trx_id'],
             'customer_id' => $input['order_summary']['customer_id'],
             'amount' => $input['order_summary']['paid_amount'],
             'payment_method_id' => $input['order_summary']['payment_method_id'],

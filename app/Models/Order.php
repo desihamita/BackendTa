@@ -112,4 +112,6 @@ class Order extends Model
         $orders = $query->get();
         return collect($orders);
     }
+
+    
 }

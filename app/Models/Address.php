@@ -37,7 +37,7 @@ class Address extends Model
 
     final public function prepareData(array $input): array
     {
-        $address['address'] = $input['details'] ?? '';
+        $address['address'] = $input['address'] ?? '';
         $address['landmark'] =  $input['landmark'] ?? '';
         $address['status'] = self::STATUS_ACTIVE;
         $address['type'] = self::SUPPLIER_ADDRESS;
@@ -77,5 +77,10 @@ class Address extends Model
     final public function deleteAddressBySupplierId($supplier): int
     {
         return $supplier->address()->delete();
+    }
+
+    final public function deleteAddressBySalesManagerId($salesManager): int
+    {
+        return $salesManager->address()->delete();
     }
 }

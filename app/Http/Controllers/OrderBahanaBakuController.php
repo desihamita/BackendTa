@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Models\OrderBahanaBaku;
 use App\Http\Resources\OrderBahanBakuListResource;
 use App\Http\Resources\OrderBahanBakuDetailsResource;
+use App\Exports\OrderBahanBakuExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderBahanaBakuController extends Controller
 {
@@ -52,13 +54,8 @@ class OrderBahanaBakuController extends Controller
         return new OrderBahanBakuDetailsResource($orderBahanBaku);
     }
 
-    public function update(UpdateOrderBahanaBakuRequest $request, OrderBahanaBaku $orderBahanaBaku)
+    public function exportBahanBaku()
     {
-        // Implement update functionality if needed
-    }
-
-    public function destroy(OrderBahanaBaku $orderBahanaBaku)
-    {
-        // Implement destroy functionality if needed
+        return Excel::download(new OrderBahanBakuExport, 'PesananBahanBaku.xlsx');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UpdateSalesManagerRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateSalesManagerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,19 @@ class UpdateSalesManagerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|min:3|max:255',
+            'phone' => 'required|numeric',
+            'email' => 'required|email',
+            'bio' => 'max:1000',
+            'password' => ['nullable', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised()],
+
+            'address' => 'required|min:3|max:255',
+            'landmark' => 'max:255',
+            'division_id' => 'required|numeric',
+            'district_id' => 'required|numeric',
+            'sub_district_id' => 'required|numeric',
+            'area_id' => 'required|numeric',
+            'shop_id' => 'required|numeric',
         ];
     }
 }

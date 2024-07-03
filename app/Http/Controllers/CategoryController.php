@@ -23,12 +23,7 @@ class CategoryController extends Controller
         $categories = (new Category())->getAllCategories($request->all());
         return CategoryListResource::collection($categories);
     }
-
-    final public function show(Category $category): CategoryEditResource
-    {
-        return new CategoryEditResource($category);
-    }
-
+    
     public function store(StoreCategoryRequest $request)
     {
         $category = $request->except('photo');
@@ -39,6 +34,11 @@ class CategoryController extends Controller
         }
         (new Category())->storeCategory($category);
         return response()->json(['msg' => 'Category Created Successfully', 'cls' => 'success']);
+    }
+
+    final public function show(Category $category): CategoryEditResource
+    {
+        return new CategoryEditResource($category);
     }
 
     final public function update(UpdateCategoryRequest $request, Category $category): JsonResponse

@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use App\Models\Attribute;
 use App\Manager\PriceManager;
 
-class OrderBahanBakuManager
+class OrderBahanBakuManager 
 {
     private const ORDER_PREFIX = 'SAJ';
 

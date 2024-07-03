@@ -62,11 +62,15 @@ Route::group(['middleware' => ['auth:sanctum', 'auth:admin']], static function (
 Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function () {
     Route::apiResource('supplier', SupplierController::class)->only('index', 'show');
     Route::apiResource('product', ProductController ::class)->only('index', 'show');
-    Route::apiResource('attribute', AttributeController::class)->only('index', 'show');
+    Route::apiResource('attribute', AttributeController::class);
     Route::apiResource('customer', CustomerController ::class);
     Route::apiResource('order', OrderController::class);
     Route::apiResource('order-bahan-baku', OrderBahanaBakuController::class);
     Route::apiResource('outbound-items', OutboundItemsController::class);
+
+    Route::get('get-sales-manager-list', [SalesManagerController::class, 'getSalesManagerList']);
+    Route::get('get-shop-list', [ShopController::class, 'get_shop_list']);
+    Route::get('get-attribute-list', [AttributeController::class, 'get_attribute_list']);
 
     Route::get('get-product-column', [ProductController ::class, 'get_product_column']);
     Route::get('get-category-column', [CategoryController ::class, 'get_category_column']);
@@ -80,7 +84,11 @@ Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function ()
     Route::get('get-category-list', [CategoryController::class, 'get_category_list']);
     Route::get('get-sub-category-list/{category_id}', [SubCategoryController::class, 'get_sub_category_list']);
     Route::get('get-product-list-for-barcode', [ProductController::class, 'get_product_list_for_barcode']);
+    Route::get('get-bahan-baku-list-for-barcode', [AttributeController::class, 'get_bahan_baku_list_for_barcode']);
     Route::get('get-sales-reports', [SalesReportController::class, 'get_sales_reports']);
+
+    Route::get('/export-orders', [OrderController::class, 'exportOrders']);
+    Route::get('/export-bahan-baku', [OrderBahanaBakuController::class, 'exportBahanBaku']);
 });
 
 Route::group(['middleware' =>  ['auth:sales_manager']], static function () {

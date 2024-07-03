@@ -1,14 +1,11 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Manager\OutboundItemsManager;
-use App\Models\Transaction;
-use App\Models\Supplier;
-use App\Models\TransactionOutboundItems;
+use Illuminate\Support\Facades\Log;
 
 class OutboundItems extends Model
 {
@@ -30,8 +27,6 @@ class OutboundItems extends Model
         $is_admin = $auth->guard('admin')->check();
 
         $query = self::query()->with([
-            'supplier:id,name',
-            'payment_method:id,name',
             'sales_manager:id,name',
             'shop:id,name',
         ]);
@@ -52,7 +47,9 @@ class OutboundItems extends Model
         }
 
         $outboundItem = self::query()->create($outbound_item_data['item_data']);
+
         (new OutboundItemDetails())->storeOutboundItemDetails($outbound_item_data['item_details'], $outboundItem);
+
         (new TransactionOutboundItems())->storeTransaction($input, $outboundItem, $auth);
         return $outboundItem;
     }
@@ -64,34 +61,16 @@ class OutboundItems extends Model
         if (isset($price['error_description'])) {
             return $price;
         } else {
+            // Check if item_details is not empty before accessing
             $item_data = [
                 'sales_manager_id' => $auth->id,
                 'shop_id' => $auth->shop_id,
-                'sub_total' => $price['sub_total'],
-                'total' => $price['total'],
                 'quantity' => $price['quantity'],
-                'supplier_id' => $input['item_summary']['supplier_id'],
-                'paid_amount' => $input['item_summary']['paid_amount'],
-                'due_amount' => $input['item_summary']['due_amount'],
-                'item_status' => self::STATUS_COMPLETED,
-                'item_number' => OutboundItemsManager::generateItemNumber($auth->shop_id),
-                'payment_method_id' => $input['item_summary']['payment_method_id'],
-                'payment_status' => OutboundItemsManager::decidePaymentStatus($price['total'], $input['item_summary']['paid_amount']),
-                'shipment_status' => self::SHIPMENT_STATUS_COMPLETED,
+                'attribute_id' => !empty($price['item_details']) ? $price['item_details'][0]['attribute_id'] : null,
             ];
 
             return ['item_data' => $item_data, 'item_details' => $price['item_details']];
         }
-    }
-
-    public function supplier()
-    {
-        return $this->belongsTo(Supplier::class);
-    }
-
-    public function payment_method()
-    {
-        return $this->belongsTo(PaymentMethod::class);
     }
 
     public function sales_manager()

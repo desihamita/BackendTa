@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('outbound_items', function (Blueprint $table) {
             $table->id();
+            $table->integer('quantity')->nullable();
+            $table->date('date')->nullable();
+            $table->text('keterangan')->nullable();
+            $table->foreignId('sales_manager_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('shop_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('attribute_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

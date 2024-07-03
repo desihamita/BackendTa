@@ -11,6 +11,7 @@ use App\Http\Resources\OrderListResource;
 use App\Http\Resources\OrderDetailsResource;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Exports\OrdersExport;
 
 class OrderController extends Controller
 {
@@ -48,11 +49,8 @@ class OrderController extends Controller
         return new OrderDetailsResource($order);
     }
 
-    public function update(UpdateOrderRequest $request, Order $order) {
-        // Update order logic
-    }
-
-    public function destroy(Order $order) {
-        // Delete order logic
+    public function exportOrders()
+    {
+        return Excel::download(new OrdersExport, 'PesananProduk.xlsx');
     }
 }

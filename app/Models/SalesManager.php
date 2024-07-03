@@ -57,7 +57,11 @@ class SalesManager extends Model
         $sales_manager['status'] = isset($input['status']) && $input['status'] !== 0 ? (int)$input['status'] : self::STATUS_INACTIVE;
         $sales_manager['user_id'] = $auth->id();
         $sales_manager['shop_id'] = $input['shop_id'] ?? null;
-        $sales_manager['password'] = Hash::make($input['password']);
+
+        if (isset($input['password'])) {
+            $sales_manager['password'] = Hash::make($input['password']);
+        }
+
         return $sales_manager;
     }
 
@@ -102,11 +106,6 @@ class SalesManager extends Model
         return $this->belongsTo(Shop::class);
     }
 
-    // final public function getUserByEmailOrPhone(array $input): Builder|Model|null
-    // {
-    //     return self::query()->where('email', $input['email'])->orWhere('phone', $input['email'])->first();
-    // }
-
     final public function getUserByEmailOrPhone(array $input): ?self
     {
         return self::query()->where('email', $input['email'])->orWhere('phone', $input['email'])->first();
@@ -115,5 +114,10 @@ class SalesManager extends Model
     final public function transaction(): MorphOne
     {
         return $this->morphOne(Transaction::class, 'transactionable');
+    }
+
+    public function getSalesManagerIdAndName()
+    {
+        return self::query()->select('id', 'name')->get();
     }
 }

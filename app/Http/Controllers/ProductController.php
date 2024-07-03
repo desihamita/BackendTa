@@ -29,11 +29,6 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
             $product = (new Product())->storeProduct($request->all(), auth()->id());
-
-            if($request->has('attributes')){
-                (new ProductAttribute())->storeAttributeData($request->input('attributes'), $product);
-            }
-
             DB::commit();
             return response()->json(['msg' => 'Product Created Successfully', 'cls' => 'success', 'product_id' => $product->id]);
         } catch (\Throwable $e) {
@@ -53,7 +48,6 @@ class ProductController extends Controller
             'primary_photo',
             'product_attributes',
             'product_attributes.attributes',
-            'product_attributes.values',
         ]);
 
         return new ProductDetailsResource($product);
@@ -64,12 +58,12 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
             $product->update($request->all());
-            
+
             if($request->has('attributes')){
                 $product->product_attributes()->delete();
                 (new ProductAttribute())->storeAttributeData($request->input('attributes'), $product);
             }
-    
+
             DB::commit();
             return response()->json(['msg' => 'Product Updated Successfully', 'cls' => 'success']);
         } catch (\Throwable $e) {
@@ -82,11 +76,11 @@ class ProductController extends Controller
     {
         try {
             DB::beginTransaction();
-            
+
             $product->product_attributes()->delete();
             $product->photos()->delete();
             $product->delete();
-            
+
             DB::commit();
             return response()->json(['msg' => 'Product Deleted Successfully', 'cls' => 'success']);
         } catch (\Throwable $e) {

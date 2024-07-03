@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\attributeEditResource;
 use App\Http\Resources\attributeDetailsResource;
 use App\Manager\ImageManager;
+use App\Http\Resources\AttributeListForBarcodeResource;
 
 class AttributeController extends Controller
 {
@@ -93,6 +94,12 @@ class AttributeController extends Controller
     {
         $attributes = (new Attribute())->getAttributeListWithValue();
         return response()->json($attributes);
+    }
+
+    public function get_bahan_baku_list_for_barcode(Request $request)
+    {
+        $attributes = (new Attribute())->getBahanBakuForBarcode($request->all());
+        return AttributeListForBarcodeResource::collection($attributes);
     }
 
     public function get_attribute_column()

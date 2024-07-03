@@ -23,8 +23,11 @@ class OutboundItemsController extends Controller
     {
         try {
             DB::beginTransaction();
+
             $outboundItem = (new OutboundItems)->placeOutboundItem($request->all(), auth()->user());
+
             DB::commit();
+
             return response()->json(['msg' => 'Outbound Item Placed Successfully', 'cls' => 'success', 'flag' => 1, 'item_id' => $outboundItem->id]);
         } catch (\Throwable $th) {
             Log::info('OUTBOUND_ITEM_PLACED_FAILED', ['message' => $th->getMessage(), $th]);
@@ -35,7 +38,12 @@ class OutboundItemsController extends Controller
 
     public function show(OutboundItems $outboundItem)
     {
-        // Implement show functionality if needed
+        $outboundItem->load([
+            'sales_manager',
+            'shop',
+            'order_details',
+        ]);
+        return new OutboundItemDetailsResource($outboundItem);
     }
 
     public function update(UpdateOutboundItemsRequest $request, OutboundItems $outboundItem)
