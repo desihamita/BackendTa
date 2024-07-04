@@ -23,16 +23,19 @@ class CategoryController extends Controller
         $categories = (new Category())->getAllCategories($request->all());
         return CategoryListResource::collection($categories);
     }
-    
+
     public function store(StoreCategoryRequest $request)
     {
         $category = $request->except('photo');
         $category['slug'] = Str::slug($request->input('slug'));
         $category['user_id'] = auth()->id();
+
         if($request->has('photo')){
             $category['photo']= $this->processImageUpload($request->input('photo'), $category['slug']);
         }
+
         (new Category())->storeCategory($category);
+        
         return response()->json(['msg' => 'Category Created Successfully', 'cls' => 'success']);
     }
 

@@ -65,8 +65,8 @@ class AttributeController extends Controller
             $attribute_data['photo'] = ImageManager::processImageUpload(
                 $request->input('photo'),
                 $name,
-                Attribute::IMAGE_UPLOAD_PATH,
-                Attribute::THUMB_IMAGE_UPLOAD_PATH,
+                Attribute::PHOTO_UPLOAD_PATH,
+                Attribute::THUMB_PHOTO_UPLOAD_PATH,
                 Attribute::PHOTO_WIDTH,
                 Attribute::PHOTO_HEIGHT,
                 Attribute::PHOTO_THUMB_WIDTH,

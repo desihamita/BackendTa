@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\ProductAttribute;
-use App\Models\ProductSPecifications;
+use App\Models\ProductSpecifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\ProductListResource;
@@ -15,6 +15,10 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\ProductListForBarcodeResource;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Resources\ProductDetailsResource;
+use App\Http\Resources\ProductEditResource;
+use App\Manager\ImageManager;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -42,45 +46,45 @@ class ProductController extends Controller
         $product->load([
             'category:id,name',
             'sub_category:id,name',
-            'photos:id,photo,product_id',
             'created_by:id,name',
             'updated_by:id,name',
-            'primary_photo',
-            'product_attributes',
-            'product_attributes.attributes',
         ]);
 
-        return new ProductDetailsResource($product);
+        return [
+            'edit' => new ProductEditResource($product),
+            'details' => new ProductDetailsResource($product),
+        ];
     }
 
     public function update(UpdateProductRequest $request, Product $product)
     {
-        try {
-            DB::beginTransaction();
-            $product->update($request->all());
+        $product_data = $request->validated();
 
-            if($request->has('attributes')){
-                $product->product_attributes()->delete();
-                (new ProductAttribute())->storeAttributeData($request->input('attributes'), $product);
-            }
-
-            DB::commit();
-            return response()->json(['msg' => 'Product Updated Successfully', 'cls' => 'success']);
-        } catch (\Throwable $e) {
-            DB::rollback();
-            return response()->json(['msg' => $e->getMessage(), 'cls' => 'error']);
+        if ($request->has('photo')) {
+            $name = Str::slug($product_data['name'] . now());
+            $product_data['photo'] = ImageManager::processImageUpload(
+                $request->input('photo'),
+                $name,
+                Product::PHOTO_UPLOAD_PATH,
+                Product::THUMB_PHOTO_UPLOAD_PATH,
+                Product::PHOTO_WIDTH,
+                Product::PHOTO_HEIGHT,
+                Product::PHOTO_THUMB_WIDTH,
+                Product::PHOTO_THUMB_HEIGHT,
+                $product->photo
+            );
         }
+
+        $product->update($product_data);
+
+        return response()->json(['msg' => 'Product Updated Successfully', 'cls' => 'success']);
     }
 
     public function destroy(Product $product)
     {
         try {
             DB::beginTransaction();
-
-            $product->product_attributes()->delete();
-            $product->photos()->delete();
             $product->delete();
-
             DB::commit();
             return response()->json(['msg' => 'Product Deleted Successfully', 'cls' => 'success']);
         } catch (\Throwable $e) {
@@ -98,10 +102,10 @@ class ProductController extends Controller
     public function get_product_column()
     {
         $columns = Schema::getColumnListing('products');
-        $formated_columns = [];
+        $formatted_columns = [];
         foreach ($columns as $column) {
-            $formated_columns[] = ['id' => $column, 'name' => ucfirst(str_replace('_', ' ', $column))];
+            $formatted_columns[] = ['id' => $column, 'name' => ucfirst(str_replace('_', ' ', $column))];
         }
-        return response()->json($formated_columns);
+        return response()->json($formatted_columns);
     }
 }

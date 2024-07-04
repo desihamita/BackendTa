@@ -23,19 +23,18 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name' => 'string|required|min:3|max:255',
-            'slug' => 'string|required|min:3|max:255|unique:products',
-            'sku' => 'string|required|min:3|max:255|unique:products',
+            'slug' => 'required|string|max:255',
+            'sku' => 'required|string|max:255',
             'discount_fixed' => 'numeric',
             'discount_percent' => 'numeric',
             'cost' => 'numeric|required',
             'price' => 'numeric|required',
-            'status' => 'numeric|required',
-            'stock' => 'numeric|required',
+            'status' => 'required|boolean',
+            'stock' => 'required|integer',
             'description' => 'required|max:1000|min:10',
-            'attributes' => 'array',
-
-            'category_id' => 'numeric',
-            'sub_category_id' => 'numeric',
+            
+            'category_id' => 'required|integer|exists:categories,id',
+            'sub_category_id' => 'required|integer|exists:sub_categories,id',
         ];
     }
 }

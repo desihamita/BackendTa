@@ -28,8 +28,10 @@ class ProductDetailsResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'cost' => PriceManager::CURRENCY_SYMBOL . $this->cost,
+
             'profit' => $price_manager['price'] - $this->cost,
-            'profit_precentage' => number_format(((($price_manager['price'] - $this->cost) / $price_manager['price'])*100), 0),
+            'profit_percentage' => number_format(((($price_manager['price'] - $this->cost) / $price_manager['price'])*100), 0),
+
             'price' => PriceManager::CURRENCY_SYMBOL . number_format($this->price),
             'original_price' => $this->price,
             'sell_price' => $price_manager,
@@ -52,10 +54,7 @@ class ProductDetailsResource extends JsonResource
 
             'category' => $this->category?->name,
             'sub_category' => $this->sub_category?->name,
-            'primary_photo' => ImageManager::prepareImageUrl(ProductPhoto::THUMB_PHOTO_UPLOAD_PATH, $this->primary_photo?->photo ?? ''),
-
-            'attributes' => ProductAttributeListResource::collection($this->product_attributes),
-            'photos' => ProductPhotoListResource::collection($this->photos),
+            'primary_photo' => ImageManager::prepareImageUrl(ProductPhoto::THUMB_PHOTO_UPLOAD_PATH, $this->photo ?? ''),
         ];
     }
 }

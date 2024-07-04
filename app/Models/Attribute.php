@@ -19,11 +19,10 @@ use App\Models\AttributeValue;
 
 class Attribute extends Model
 {
-
     use HasFactory;
 
-    public const IMAGE_UPLOAD_PATH = 'images/uploads/attribute/';
-    public const THUMB_IMAGE_UPLOAD_PATH = 'images/uploads/attribute_thumb/';
+    public const PHOTO_UPLOAD_PATH = 'images/uploads/attribute/';
+    public const THUMB_PHOTO_UPLOAD_PATH = 'images/uploads/attribute_thumb/';
 
     public const PHOTO_WIDTH = 800;
     public const PHOTO_HEIGHT = 800;
@@ -63,8 +62,8 @@ class Attribute extends Model
             $attributeData['photo'] = ImageManager::processImageUpload(
                 $input['photo'],
                 $name,
-                self::IMAGE_UPLOAD_PATH,
-                self::THUMB_IMAGE_UPLOAD_PATH,
+                self::PHOTO_UPLOAD_PATH,
+                self::THUMB_PHOTO_UPLOAD_PATH,
                 self::PHOTO_WIDTH,
                 self::PHOTO_HEIGHT,
                 self::PHOTO_THUMB_WIDTH,
@@ -154,19 +153,6 @@ class Attribute extends Model
     final public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class);
-    }
-
-    final public function value(): HasMany
-    {
-        return $this->hasMany(AttributeValue::class);
-    }
-
-    final public function getAttributeListWithValue()
-    {
-        return self::query()
-            ->select('id', 'name')
-            ->with('value:id,name,attribute_id')
-            ->get();
     }
 
     public function getBahanBakuForBarcode($input)

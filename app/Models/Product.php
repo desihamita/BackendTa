@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Manager\ImageManager;
 use Illuminate\Support\Str;
 
 use App\Models\Category;
@@ -22,6 +23,7 @@ use App\Models\ProductAttribute;
 class Product extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'category_id' ,
         'sub_category_id',
@@ -37,6 +39,7 @@ class Product extends Model
         'stock',
         'sku',
         'description',
+        'photo',
         'created_by_id',
         'updated_by_id',
     ];
@@ -44,9 +47,33 @@ class Product extends Model
     public const STATUS_ACTIVE = 1;
     public const STATUS_INACTIVE = 0;
 
+    public const PHOTO_WIDTH = 800;
+    public const PHOTO_HEIGHT = 800;
+    public const PHOTO_THUMB_WIDTH = 200;
+    public const PHOTO_THUMB_HEIGHT = 200;
+
+    public const PHOTO_UPLOAD_PATH = 'images/uploads/product/';
+    public const THUMB_PHOTO_UPLOAD_PATH = 'images/uploads/product_thumb/';
+
     final public function storeProduct(array $input, int $auth_id): mixed
     {
-        return self::create($this->prepareData($input, $auth_id));
+        $productData = $this->prepareData($input, $auth_id);
+
+        if(isset($input['photo'])) {
+            $name = Str::slug($productData['name'] . now());
+            $productData['photo'] = ImageManager::processImageUpload(
+                $input['photo'],
+                $name,
+                self::PHOTO_UPLOAD_PATH,
+                self::THUMB_PHOTO_UPLOAD_PATH,
+                self::PHOTO_WIDTH,
+                self::PHOTO_HEIGHT,
+                self::PHOTO_THUMB_WIDTH,
+                self::PHOTO_THUMB_HEIGHT
+            );
+        }
+
+        return self::create($productData);
     }
 
     private function prepareData(array $input, int $auth_id): array
@@ -61,6 +88,7 @@ class Product extends Model
             'status' => $input['status'] ?? '',
             'cost' => $input['cost'] ?? '',
             'price' => $input['price'] ?? '',
+            'photo' => $input['photo'] ?? '',
             'discount_end' => $input['discount_end'] ?? null,
             'discount_fixed' => $input['discount_fixed'] ?? null,
             'discount_percent' => $input['discount_percent'] ?? null,
@@ -73,7 +101,7 @@ class Product extends Model
 
     final public function getProductById(int $id): Builder|Collection|Model|null
     {
-        return self::query()->with('primary_photo')->findOrFail($id);
+        return self::query()->findOrFail($id);
     }
 
     final public function getProductList($input)
@@ -84,9 +112,6 @@ class Product extends Model
             'sub_category:id,name',
             'created_by:id,name',
             'updated_by:id,name',
-            'primary_photo',
-            'product_attributes',
-            'product_attributes.attributes',
         ]);
 
         if (!empty($input['search'])) {
@@ -145,25 +170,10 @@ class Product extends Model
     {
         return $this->belongsTo(User::class, 'updated_by_id');
     }
-
-    final public function primary_photo(): HasOne
-    {
-        return $this->hasOne(ProductPhoto::class)->where('is_primary', 1);
-    }
-
-    final public function product_attributes(): HasMany
-    {
-        return $this->hasMany(ProductAttribute::class);
-    }
-
+    
     public function getAllProduct($columns = ['*'])
     {
         $products = DB::table('products')->select($columns)->get();
         return collect($products);
-    }
-
-    public function photos()
-    {
-        return $this->hasMany(ProductPhoto::class)->where('is_primary', 1);
     }
 }

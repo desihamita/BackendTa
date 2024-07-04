@@ -27,7 +27,7 @@ class attributeDetailsResource extends JsonResource
             'stock' => $this->stock,
             'description' => $this->description,
             'status' => $this->status,
-            'photo' => $this->photo ? ImageManager::prepareImageUrl(Attribute::THUMB_IMAGE_UPLOAD_PATH, $this->photo) : null,
+            'photo' => $this->photo ? ImageManager::prepareImageUrl(Attribute::THUMB_PHOTO_UPLOAD_PATH, $this->photo) : null,
 
             'created_at' => $this->created_at ? $this->created_at->toDayDateTimeString() : 'Unknown',
             'updated_at' => $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated',

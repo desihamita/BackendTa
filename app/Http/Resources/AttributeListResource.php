@@ -26,7 +26,7 @@ class AttributeListResource extends JsonResource
             'stock' => $this->stock,
             'description' => $this->description,
             'status' => $this->status === 1 ? 'Active' : 'Inactive',
-            'photo' => ImageManager::prepareImageUrl(Attribute::THUMB_IMAGE_UPLOAD_PATH, $this->photo),
+            'photo' => ImageManager::prepareImageUrl(Attribute::THUMB_PHOTO_UPLOAD_PATH, $this->photo),
 
             'category' => $this->category?->name,
             'sub_category' => $this->sub_category?->name,
@@ -38,7 +38,6 @@ class AttributeListResource extends JsonResource
             'original_status' => $this->status,
             'created_at' => $this->created_at->toDayDateTimeString(),
             'updated_at' => $this->created_at != $this->updated_at ? $this->updated_at->toDayDateTimeString() : 'Not updated at',
-            'value' => ValueListResource::collection($this->value),
         ];
 
    }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('cost')->nullable();
             $table->integer('price')->nullable();
             $table->integer('stock')->nullable();
+            $table->string('photo')->nullable();
             $table->integer('discount_fixed')->nullable();
             $table->integer('discount_percent')->nullable();
             $table->timestamp('discount_start')->nullable();
