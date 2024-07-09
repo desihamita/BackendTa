@@ -20,22 +20,19 @@ class OutboundItemsManager
 
         if (isset($input['items'])) {
             foreach ($input['items'] as $key => $item) {
-                $attribute = Attribute::find($item['attribute_id']);
+                $attribute = (new Attribute())->getAttributeById($key);
 
                 if ($attribute && $attribute->stock >= $item['quantity']) {
                     $quantity += $item['quantity'];
 
-                    $attribute->decrement('stock', $item['quantity']);
+                    $attribute_data['stock'] = $attribute->stock - $item['quantity'];
+                    $attribute->update($attribute_data);
+                    $attribute->quantity = $item['quantity'];
+                    $item_details[] = $attribute;
 
-                    $item_detail = [
-                        'attribute_id' => $attribute->id,
-                        'quantity' => $item['quantity'],
-                    ];
-
-                    $item_details[] = $item_detail; // Append to item_details array
                 } else {
                     Log::info('ATTRIBUTE_STOCK_OUT', ['attribute' => $attribute, 'item' => $item]);
-                    return ['error_description' => $attribute->name . ' stock is out or does not exist'];
+                    return ['error_description' => $attribute->name . ' stok habis atau tidak tersedia'];
                 }
             }
         }

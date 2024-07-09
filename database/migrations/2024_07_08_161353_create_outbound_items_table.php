@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('keterangan')->nullable();
             $table->foreignId('sales_manager_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('shop_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('attribute_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -14,6 +14,14 @@ class OutboundItems extends Model
     protected $table = 'outbound_items';
     protected $guarded = [];
 
+    protected $fillable = [
+        'quantity',
+        'date',
+        'keterangan',
+        'sales_manager_id',
+        'shop_id'
+    ];
+
     public const STATUS_PENDING = 1;
     public const STATUS_PROCESSED = 2;
     public const STATUS_COMPLETED = 3;
@@ -24,18 +32,20 @@ class OutboundItems extends Model
 
     public function getAllOutboundItems(array $input, $auth)
     {
-        $is_admin = $auth->guard('admin')->check();
+        $per_page = $input['per_page'] ?? 10;
+        $query = self::query();
 
-        $query = self::query()->with([
-            'sales_manager:id,name',
-            'shop:id,name',
-        ]);
-
-        if (!$is_admin) {
-            $query->where('shop_id', $auth->user()->shop_id);
+        if (!empty($input['search'])) {
+            $query->where('quantity', 'like', '%'.$input['search'].'%')
+                  ->orWhere('date', 'like', '%'.$input['search'].'%')
+                  ->orWhere('keterangan', 'like', '%'.$input['search'].'%');;
         }
 
-        return $query->paginate(10);
+        if (!empty($input['order_by'])) {
+            $query->orderBy($input['order_by'], $input['direction'] ?? 'asc');
+        }
+
+        return $query->with('sales_manager:id,name','shop:id,name',)->paginate($per_page);
     }
 
     public function placeOutboundItem(array $input, $auth)
@@ -49,27 +59,24 @@ class OutboundItems extends Model
         $outboundItem = self::query()->create($outbound_item_data['item_data']);
 
         (new OutboundItemDetails())->storeOutboundItemDetails($outbound_item_data['item_details'], $outboundItem);
-
-        (new TransactionOutboundItems())->storeTransaction($input, $outboundItem, $auth);
-        return $outboundItem;
     }
 
     public function prepareData(array $input, $auth)
     {
-        $price = OutboundItemsManager::handleItemData($input);
+        $item = OutboundItemsManager::handleItemData($input);
 
-        if (isset($price['error_description'])) {
-            return $price;
+        if (isset($item['error_description'])) {
+            return $item;
         } else {
-            // Check if item_details is not empty before accessing
             $item_data = [
                 'sales_manager_id' => $auth->id,
                 'shop_id' => $auth->shop_id,
-                'quantity' => $price['quantity'],
-                'attribute_id' => !empty($price['item_details']) ? $price['item_details'][0]['attribute_id'] : null,
+                'quantity' => $input['quantity'],
+                'date' => $input['date'],
+                'keterangan' => $input['keterangan'],
             ];
 
-            return ['item_data' => $item_data, 'item_details' => $price['item_details']];
+            return ['item_data' => $item_data, 'item_details' => $item['item_details']];
         }
     }
 

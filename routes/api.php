@@ -89,6 +89,7 @@ Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function ()
 
     Route::get('/export-orders', [OrderController::class, 'exportOrders']);
     Route::get('/export-bahan-baku', [OrderBahanaBakuController::class, 'exportBahanBaku']);
+    Route::get('/export-items', [OutboundItemsController::class, 'exportItems']);
 });
 
 Route::group(['middleware' =>  ['auth:sales_manager']], static function () {

@@ -32,10 +32,6 @@ class Attribute extends Model
     public const STATUS_ACTIVE = 1;
     public const STATUS_INACTIVE = 0;
 
-    protected $casts = [
-        'price' => 'integer',
-    ];
-
     protected $fillable = [
         'name',
         'slug',
@@ -123,6 +119,10 @@ class Attribute extends Model
     final public function getAttributeById(int $id): Builder|Collection|Model|null
     {
         return self::query()->findOrFail($id);
+    }
+    final public function getAttributeListWithValue()
+    {
+        return self::query()->select('id', 'name')->get();
     }
 
     final public function created_by(): BelongsTo
