@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth:sanctum', 'auth:admin']], static function (
 Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function () {
     Route::apiResource('supplier', SupplierController::class)->only('index', 'show');
     Route::apiResource('product', ProductController ::class)->only('index', 'show');
+    Route::apiResource('shop', ShopController::class)->only('index', 'show');
     Route::apiResource('attribute', AttributeController::class);
     Route::apiResource('customer', CustomerController ::class);
     Route::apiResource('order', OrderController::class);
@@ -72,6 +73,7 @@ Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function ()
     Route::get('get-shop-list', [ShopController::class, 'get_shop_list']);
     Route::get('get-attribute-list', [AttributeController::class, 'get_attribute_list']);
     Route::get('get-product-list', [ProductController::class, 'get_product_list']);
+    Route::get('get-user', [AuthController::class, 'get_user']);
 
     Route::get('get-product-column', [ProductController ::class, 'get_product_column']);
     Route::get('get-category-column', [CategoryController ::class, 'get_category_column']);

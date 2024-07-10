@@ -46,14 +46,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // final public function getUserByEmailOrPhone(array $input):Builder|Model|null
-    // {
-    //     return self::query()->where('email', $input['email'])->orWhere('phone', $input['email'])->first();
-    // }
-
     final public function getUserByEmailOrPhone(array $input): ?self
     {
         return self::query()->where('email', $input['email'])->orWhere('phone', $input['email'])->first();
     }
 
+    final public function getUserList()
+    {
+        return self::query()->select('id', 'name', 'email', 'phone', 'photo')->get();
+    }
 }

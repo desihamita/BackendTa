@@ -66,4 +66,10 @@ class AuthController extends Controller
 
         return response()->json(['msg' => 'No authenticated user found'], 401);
     }
+
+    final public function get_user(): JsonResponse
+    {
+        $users = (new User())->getUserList();
+        return response()->json($users);
+    }
 }
