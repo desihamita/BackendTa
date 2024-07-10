@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Manager\ImageManager;
 use App\Manager\PriceManager;
-use App\Models\ProductPhoto;
+use App\Models\Product;
 use Carbon\Carbon;
 
 class OrderDetailsListResource extends JsonResource
@@ -21,14 +21,12 @@ class OrderDetailsListResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'photo'=> ImageManager::prepareImageUrl(ProductPhoto::THUMB_PHOTO_UPLOAD_PATH, $this->photo),
+            'photo' => ImageManager::prepareImageUrl(Product::THUMB_PHOTO_UPLOAD_PATH, $this->photo),
             'cost' => PriceManager::CURRENCY_SYMBOL . $this->cost,
             'price' => PriceManager::CURRENCY_SYMBOL . number_format($this->price),
             'sell_price' => PriceManager::calculate_sell_price($this->price, $this->discount_percent, $this->discount_fixed, $this->discount_start, $this->discount_end),
             'quantity' => $this->quantity,
-            'sku' => $this->sku,
 
-            'brand' => $this->brand_id?->name,
             'category' => $this->category?->name,
             'sub_category' => $this->sub_category?->name,
             'supplier' => $this->supplier?->name,

@@ -45,7 +45,7 @@ class ProductListResource extends JsonResource
             'sub_category' => $this->sub_category?->name,
             'created_by' => $this->created_by?->name,
             'updated_by' => $this->updated_by?->name,
-            'photo' => ImageManager::prepareImageUrl(ProductPhoto::THUMB_PHOTO_UPLOAD_PATH, $this->photo ?? ''),
+            'photo' => ImageManager::prepareImageUrl(Product::THUMB_PHOTO_UPLOAD_PATH, $this->photo ?? ''),
         ];
     }
 }

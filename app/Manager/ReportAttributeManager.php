@@ -3,13 +3,13 @@
 namespace App\Manager;
 
 use Illuminate\Support\Collection;
-use App\Models\Product;
-use App\Models\Order;
+use App\Models\Attribute;
+use App\Models\OrderBahanaBaku;
 use Carbon\Carbon;
 
-class ReportManager{
+class ReportAttributeManager {
     public const LOW_STOCK_ALERT = 5;
-    public int $total_product = 0;
+    public int $total_attribute = 0;
     public int $total_stock = 0;
     public int $low_stock = 0;
     public int $buy_stock_price = 0;
@@ -23,7 +23,7 @@ class ReportManager{
 
     private bool $is_admin = false;
     private int $sales_admin_id;
-    private Collection $products;
+    private Collection $attributes;
     private Collection $orders;
 
     public function __construct($auth)
@@ -33,8 +33,8 @@ class ReportManager{
         }
         $this->sales_admin_id = $auth->user()->id;
 
-        $this->getProducts();
-        $this->setTotalProduct();
+        $this->getAttributes();
+        $this->setTotalAttribute();
         $this->calculateStock();
         $this->findLowStock();
         $this->caluculateBuyStockPrice();
@@ -49,39 +49,39 @@ class ReportManager{
         $this->calculateTotalExpense();
     }
 
-    public function getProducts(): Collection
+    public function getAttributes(): Collection
     {
-        $productModel = new Product();
-        $this->products = $productModel->getAllProduct();
-        return $this->products;
+        $attributeModel = new Attribute();
+        $this->attributes = $attributeModel->getAllAttribute();
+        return $this->attributes;
     }
 
-    private function setTotalProduct(): void
+    private function setTotalAttribute(): void
     {
-        $this->total_product = $this->products->count();
+        $this->total_attribute = $this->attributes->count();
     }
 
     private function calculateStock()
     {
-        $this->total_stock = $this->products->sum('stock');
+        $this->total_stock = $this->attributes->sum('stock');
     }
 
     private function findLowStock()
     {
-        $this->low_stock = $this->products->where('stock', '<=', self::LOW_STOCK_ALERT)->count();
+        $this->low_stock = $this->attributes->where('stock', '<=', self::LOW_STOCK_ALERT)->count();
     }
 
     private function caluculateBuyStockPrice()
     {
-        foreach ($this->products as $product) {
-            $this->buy_stock_price += ($product->cost * $product->stock);
+        foreach ($this->attributes as $attribute) {
+            $this->buy_stock_price += ($attribute->price * $attribute->stock);
         }
     }
 
     private function caluculateSaleStockPrice()
     {
-        foreach ($this->products as $product) {
-            $this->sale_stock_price += ($product->price * $product->stock);
+        foreach ($this->attributes as $attribute) {
+            $this->sale_stock_price += ($attribute->price * $attribute->stock);
         }
     }
 
@@ -92,9 +92,9 @@ class ReportManager{
 
     private function caluculatePurchaseToday()
     {
-        $product_buy_today = $this->products->whereBetween('created_at', [Carbon::today()->startOfDay(), Carbon::today()->endOfDay()]);
-        foreach ($product_buy_today as $product) {
-            $this->total_purchase_today += ($product->cost * $product->stock);
+        $attribute_buy_today = $this->attributes->whereBetween('created_at', [Carbon::today()->startOfDay(), Carbon::today()->endOfDay()]);
+        foreach ($attribute_buy_today as $attribute) {
+            $this->total_purchase_today += ($attribute->price * $attribute->stock);
         }
     }
 
@@ -105,7 +105,7 @@ class ReportManager{
 
     private function getOrders()
     {
-        return $this->orders = (new Order())->getAllOrderForReport($this->is_admin, $this->sales_admin_id);
+        return $this->orders = (new OrderBahanaBaku())->getAllOrderForReport($this->is_admin, $this->sales_admin_id);
     }
 
     private function calculateTotalSale()

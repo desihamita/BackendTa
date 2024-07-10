@@ -9,6 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use App\Manager\ImageManager;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Brand;
 use App\Models\Category;
@@ -120,9 +121,16 @@ class Attribute extends Model
     {
         return self::query()->findOrFail($id);
     }
+
     final public function getAttributeListWithValue()
     {
-        return self::query()->select('id', 'name')->get();
+        return self::query()->select('id', 'name', 'stock')->get();
+    }
+
+    public function getAllAttribute($columns = ['*'])
+    {
+        $attributes = DB::table('attributes')->select($columns)->get();
+        return collect($attributes);
     }
 
     final public function created_by(): BelongsTo

@@ -19,6 +19,7 @@ use App\Http\Resources\ProductEditResource;
 use App\Manager\ImageManager;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
@@ -97,6 +98,12 @@ class ProductController extends Controller
     {
         $products = (new Product())->getProductForBarcode($request->all());
         return ProductListForBarcodeResource::collection($products);
+    }
+
+    final public function get_product_list(): JsonResponse
+    {
+        $products = (new Product())->getProductListWithValue();
+        return response()->json($products);
     }
 
     public function get_product_column()

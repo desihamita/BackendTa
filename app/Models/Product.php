@@ -126,6 +126,11 @@ class Product extends Model
         return $query->paginate($per_page);
     }
 
+    final public function getProductListWithValue()
+    {
+        return self::query()->select('id', 'name', 'stock')->get();
+    }
+
     public function getProductForBarcode($input)
     {
         $query = self::query()->select(
@@ -170,7 +175,7 @@ class Product extends Model
     {
         return $this->belongsTo(User::class, 'updated_by_id');
     }
-    
+
     public function getAllProduct($columns = ['*'])
     {
         $products = DB::table('products')->select($columns)->get();
