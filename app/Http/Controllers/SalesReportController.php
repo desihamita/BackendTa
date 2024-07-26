@@ -25,6 +25,7 @@ class SalesReportController extends Controller
             'total_purchase_product' => PriceManager::priceFormat($reportManager->total_purchase),
             'total_purchase_today_product' => PriceManager::priceFormat($reportManager->total_purchase_today),
             'total_expense_product' => PriceManager::priceFormat($reportManager->total_expense),
+            'total_expense_today' => PriceManager::priceFormat($reportManager->total_expense_today),
         ];
         return response()->json($report);
     }

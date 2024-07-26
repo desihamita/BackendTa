@@ -20,6 +20,7 @@ class ReportManager{
     public int $total_purchase = 0;
     public int $total_purchase_today = 0;
     public int $total_expense = 0;
+    public int $total_expense_today = 0;
 
     private bool $is_admin = false;
     private int $sales_admin_id;
@@ -47,6 +48,8 @@ class ReportManager{
         $this->caluculateTotalPurchase();
         $this->caluculatePurchaseToday();
         $this->calculateTotalExpense();
+
+        $this->calculateTotalExpenseToday();
     }
 
     public function getProducts(): Collection
@@ -122,4 +125,12 @@ class ReportManager{
     {
         $this->total_expense = $this->total_purchase;
     }
+
+    private function calculateTotalExpenseToday()
+{
+    $product_buy_today = $this->products->whereBetween('created_at', [Carbon::today()->startOfDay(), Carbon::today()->endOfDay()]);
+    foreach ($product_buy_today as $product) {
+        $this->total_expense_today += ($product->cost * $product->stock);
+    }
+}
 }

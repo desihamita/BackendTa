@@ -34,7 +34,7 @@ class BrandController extends Controller
         }
 
         (new Brand())->storeBrand($brand);
-        return response()->json(['msg' => 'Brand Created Successfully', 'cls' => 'success']);
+        return response()->json(['msg' => 'Berhasil Menambahkan Data Merek', 'cls' => 'success']);
     }
 
     final public function show(Brand $brand): BrandEditResource
@@ -52,7 +52,7 @@ class BrandController extends Controller
         }
 
         $brand->update($brand_data);
-        return response()->json(['msg' => 'Brand Updated Successfully', 'cls' => 'success']);
+        return response()->json(['msg' => 'Berhasil Mengubah Data Merek', 'cls' => 'success']);
     }
 
     final public function destroy(Brand $brand): JsonResponse
@@ -63,7 +63,7 @@ class BrandController extends Controller
         }
 
         $brand->delete();
-        return response()->json(['msg' => 'Brand deleted Successfully', 'cls' => 'warning']);
+        return response()->json(['msg' => 'Berhasil Menghapus Data Merek', 'cls' => 'warning']);
     }
 
     private function processImageUpload(string $photo, string $name, string|null $existing_photo = null): string

@@ -24,6 +24,9 @@ class Product extends Model
 {
     use HasFactory;
 
+    public const PHOTO_UPLOAD_PATH = 'images/uploads/product/';
+    public const THUMB_PHOTO_UPLOAD_PATH = 'images/uploads/product_thumb/';
+
     protected $fillable = [
         'category_id' ,
         'sub_category_id',
@@ -51,9 +54,6 @@ class Product extends Model
     public const PHOTO_HEIGHT = 800;
     public const PHOTO_THUMB_WIDTH = 200;
     public const PHOTO_THUMB_HEIGHT = 200;
-
-    public const PHOTO_UPLOAD_PATH = 'images/uploads/product/';
-    public const THUMB_PHOTO_UPLOAD_PATH = 'images/uploads/product_thumb/';
 
     final public function storeProduct(array $input, int $auth_id): mixed
     {

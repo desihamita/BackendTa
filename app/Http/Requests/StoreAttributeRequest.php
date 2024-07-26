@@ -29,12 +29,13 @@ class StoreAttributeRequest extends FormRequest
             'status' => 'numeric|required',
             'stock' => 'numeric|required',
             'description' => 'required|max:1000|min:10',
+            'photo' => 'required',
 
-            'brand_id' => 'numeric',
-            'country_id' => 'numeric',
-            'category_id' => 'numeric',
-            'sub_category_id' => 'numeric',
-            'supplier_id' => 'numeric',
+            'brand_id' => 'required|numeric',
+            'country_id' => 'required|numeric',
+            'category_id' => 'required|numeric',
+            'sub_category_id' => 'required|numeric',
+            'supplier_id' => 'required|numeric',
         ];
     }
 }

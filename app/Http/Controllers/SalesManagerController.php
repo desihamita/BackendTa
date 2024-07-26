@@ -56,7 +56,7 @@ class SalesManagerController extends Controller
             $salesManager = SalesManager::create($salesManagerData);
             $salesManager->address()->create($addressData);
             DB::commit();
-            return response()->json(['msg' => 'Sales Manager Created Successfully', 'cls' => 'success']);
+            return response()->json(['msg' => 'Berhasil Menambahkan Data Karyawan', 'cls' => 'success']);
         } catch (\Throwable $e) {
             if (isset($salesManagerData['photo'])) {
                 ImageManager::deletePhoto(SalesManager::PHOTO_UPLOAD_PATH, $salesManagerData['photo']);
@@ -64,7 +64,7 @@ class SalesManagerController extends Controller
             }
             Log::error('SALES_MANAGER_STORE_FAILED', ['salesManagerData' => $salesManagerData, 'addressData' => $addressData, 'exception' => $e]);
             DB::rollback();
-            return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning']);
+            return response()->json(['msg' => 'Ada yang salah', 'cls' => 'warning']);
         }
     }
 
@@ -98,7 +98,7 @@ class SalesManagerController extends Controller
             $salesManager_data = $sales_manager->update($supplier_data);
             $salesManager->address()->update($address_data);
             DB::commit();
-            return response()->json(['msg' => 'Sales Manager Updated Successfully', 'cls' => 'success']);
+            return response()->json(['msg' => 'Berhasil Mengubah Data Karyawan', 'cls' => 'success']);
         } catch (\Throwable $e) {
             if (isset($salesManagerData['photo'])) {
                 ImageManager::deletePhoto(SalesManager::PHOTO_UPLOAD_PATH, $salesManagerData['photo']);
@@ -106,7 +106,7 @@ class SalesManagerController extends Controller
             }
             Log::error('SALES_MANAGER_UPDATE_FAILED', ['salesManagerData' => $salesManagerData, 'addressData' => $addressData, 'exception' => $e]);
             DB::rollback();
-            return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning']);
+            return response()->json(['msg' => 'Ada yang salah', 'cls' => 'warning']);
         }
     }
 
@@ -119,10 +119,10 @@ class SalesManagerController extends Controller
             }
             (new Address())->deleteAddressBySalesManagerId($salesManager);
             $salesManager->delete();
-            return response()->json(['msg' => 'Karyawan Berhasil Dihapus', 'cls' => 'warning']);
+            return response()->json(['msg' => 'Berhasil Menghapus Data Karyawan', 'cls' => 'warning']);
         } catch (\Throwable $e) {
             Log::error('SALES_MANAGER_DELETE_FAILED', ['supplier' => $salesManager, 'exception' => $e]);
-            return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning']);
+            return response()->json(['msg' => 'Ada yang salah', 'cls' => 'warning']);
         }
     }
 

@@ -35,7 +35,7 @@ class ProductController extends Controller
             DB::beginTransaction();
             $product = (new Product())->storeProduct($request->all(), auth()->id());
             DB::commit();
-            return response()->json(['msg' => 'Product Created Successfully', 'cls' => 'success', 'product_id' => $product->id]);
+            return response()->json(['msg' => 'Berhasil Menambahkan Data Produk', 'cls' => 'success', 'product_id' => $product->id]);
         } catch (\Throwable $e) {
             DB::rollback();
             return response()->json(['msg' => $e->getMessage(), 'cls' => 'error']);
@@ -78,7 +78,7 @@ class ProductController extends Controller
 
         $product->update($product_data);
 
-        return response()->json(['msg' => 'Product Updated Successfully', 'cls' => 'success']);
+        return response()->json(['msg' => 'Berhasil Mengupdate Data Produk', 'cls' => 'success']);
     }
 
     public function destroy(Product $product)
@@ -87,7 +87,7 @@ class ProductController extends Controller
             DB::beginTransaction();
             $product->delete();
             DB::commit();
-            return response()->json(['msg' => 'Product Deleted Successfully', 'cls' => 'success']);
+            return response()->json(['msg' => 'Berhasil Menghapus Data Produk', 'cls' => 'success']);
         } catch (\Throwable $e) {
             DB::rollback();
             return response()->json(['msg' => $e->getMessage(), 'cls' => 'error']);

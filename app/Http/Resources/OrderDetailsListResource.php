@@ -21,7 +21,7 @@ class OrderDetailsListResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'photo' => ImageManager::prepareImageUrl(Product::THUMB_PHOTO_UPLOAD_PATH, $this->photo),
+            'photo' => ImageManager::prepareImageUrl(Product::THUMB_PHOTO_UPLOAD_PATH, $this->photo ?? ''),
             'cost' => PriceManager::CURRENCY_SYMBOL . $this->cost,
             'price' => PriceManager::CURRENCY_SYMBOL . number_format($this->price),
             'sell_price' => PriceManager::calculate_sell_price($this->price, $this->discount_percent, $this->discount_fixed, $this->discount_start, $this->discount_end),

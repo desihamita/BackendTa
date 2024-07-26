@@ -50,16 +50,19 @@ class ShopController extends Controller
             $shop = Shop::create($shopData);
             $shop->address()->create($addressData);
             DB::commit();
-            return response()->json(['msg' => 'Shop Created Successfully', 'cls' => 'success']);
+
+            return response()->json([
+                'cls' => 'success',
+                'msg' => 'Berhasil Menambahkan Data Kafe'
+            ], 201);
         } catch (\Throwable $e) {
             if (isset($shopData['logo'])) {
                 ImageManager::deletePhoto(Shop::IMAGE_UPLOAD_PATH, $shopData['logo']);
                 ImageManager::deletePhoto(Shop::THUMB_IMAGE_UPLOAD_PATH, $shopData['logo']);
             }
-
             Log::error('SHOP_STORE_FAILED', ['shopData' => $shopData, 'addressData' => $addressData, 'exception' => $e]);
             DB::rollback();
-            return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning']);
+            return response()->json(['msg' => 'Ada yang salah', 'cls' => 'warning', 'errors' => $validator->errors()], 422);
         }
     }
 
@@ -94,7 +97,7 @@ class ShopController extends Controller
             $shop_data = $shop->update($shop_data);
             $shop->address()->update($address_data);
             DB::commit();
-            return response()->json(['msg' => 'Shop Updated  Successfully', 'cls' => 'success']);
+            return response()->json(['msg' => 'Berhasil Mengubah Data Kafe', 'cls' => 'success']);
         } catch (\Throwable $e) {
             Log::error('Shop_STORE_FAILED', ['shop' => $shop_data, 'address data' => $address_data, 'exception' => $e]);
             DB::rollback();
@@ -111,7 +114,7 @@ class ShopController extends Controller
             }
             (new Address())->deleteAddressBySupplierId($shop);
             $shop->delete();
-            return response()->json(['msg' => 'Shop Deleted Successfully', 'cls' => 'success']);
+            return response()->json(['msg' => 'Berhasil Menghapus Data Kafe', 'cls' => 'success']);
         } catch (\Throwable $e) {
             Log::error('SHOP_DELETE_FAILED', ['shop' => $shop, 'exception' => $e]);
             return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning']);

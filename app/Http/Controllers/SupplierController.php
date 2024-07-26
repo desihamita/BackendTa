@@ -49,7 +49,7 @@ class SupplierController extends Controller
             $supplier = Supplier::create($supplierData);
             $supplier->address()->create($addressData);
             DB::commit();
-            return response()->json(['msg' => 'Supplier Created Successfully', 'cls' => 'success']);
+            return response()->json(['msg' => 'Berhasil Menambahkan Data Pemasok', 'cls' => 'success']);
         } catch (\Throwable $e) {
             if (isset($supplierData['logo'])) {
                 ImageManager::deletePhoto(Supplier::IMAGE_UPLOAD_PATH, $supplierData['logo']);
@@ -92,7 +92,7 @@ class SupplierController extends Controller
             $supplier_data = $supplier->update($supplier_data);
             $supplier->address()->update($address_data);
             DB::commit();
-            return response()->json(['msg' => 'Supplier Updated  Successfully', 'cls' => 'success']);
+            return response()->json(['msg' => 'Berhasil Mengubah Data Pemasok', 'cls' => 'success']);
         } catch (\Throwable $e) {
             if (isset($supplier_data['logo'])) {
                 ImageManager::deletePhoto(Supplier::IMAGE_UPLOAD_PATH, $supplier_data['logo']);
@@ -100,7 +100,7 @@ class SupplierController extends Controller
             }
             Log::error('SUPPLIER_STORE_FAILED', ['supplier data' => $supplier_data, 'address data' => $address_data, 'exception' => $e]);
             DB::rollback();
-            return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning', 'flag' => 'true']);
+            return response()->json(['msg' => 'Ada yang salah', 'cls' => 'warning', 'flag' => 'true']);
         }
     }
 
@@ -113,10 +113,10 @@ class SupplierController extends Controller
             }
             (new Address())->deleteAddressBySupplierId($supplier);
             $supplier->delete();
-            return response()->json(['msg' => 'Supplier Deleted Successfully', 'cls' => 'success']);
+            return response()->json(['msg' => 'Berhasil Menghapus Data Pemasok', 'cls' => 'success']);
         } catch (\Throwable $e) {
             Log::error('SUPPLIER_DELETE_FAILED', ['supplier' => $supplier, 'exception' => $e]);
-            return response()->json(['msg' => 'Something went wrong', 'cls' => 'warning']);
+            return response()->json(['msg' => 'Ada yang salah', 'cls' => 'warning']);
         }
     }
 

@@ -20,7 +20,7 @@ class OrderBahanBakuDetailsListResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'photo' => ImageManager::prepareImageUrl(Attribute::THUMB_IMAGE_UPLOAD_PATH, $this->photo),
+            'photo' => ImageManager::prepareImageUrl(Attribute::THUMB_PHOTO_UPLOAD_PATH, $this->photo),
             'price' => $this->price,
             'quantity' => $this->quantity,
             'sku' => $this->sku,

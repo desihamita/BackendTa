@@ -26,7 +26,7 @@ class OrderController extends Controller
             DB::beginTransaction();
             $order = (new Order)->placeOrder($request->all(), auth()->user());
             DB::commit();
-            return response()->json(['msg' => 'Order Placed Successfully', 'cls' => 'success', 'flag' => 1, 'order_id' => $order->id]);
+            return response()->json(['msg' => 'Berhasil Membuat Pesanan', 'cls' => 'success', 'flag' => 1, 'order_id' => $order->id]);
         } catch (\Throwable $th) {
             Log::info('ORDER_PLACED_FAILED', ['message' => $th->getMessage(),$th]);
             DB::rollback();

@@ -76,6 +76,7 @@ Route::group(['middleware' =>  ['auth:admin,sales_manager']], static function ()
     Route::get('get-user', [AuthController::class, 'get_user']);
 
     Route::get('get-product-column', [ProductController ::class, 'get_product_column']);
+    
     Route::get('get-category-column', [CategoryController ::class, 'get_category_column']);
     Route::get('get-sub-category-column', [SubCategoryController ::class, 'get_sub_category_column']);
     Route::get('get-brand-column', [BrandController ::class, 'get_brand_column']);

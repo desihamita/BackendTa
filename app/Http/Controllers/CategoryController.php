@@ -36,7 +36,7 @@ class CategoryController extends Controller
 
         (new Category())->storeCategory($category);
         
-        return response()->json(['msg' => 'Category Created Successfully', 'cls' => 'success']);
+        return response()->json(['msg' => 'Berhasil Menambahkan Data Kategori', 'cls' => 'success']);
     }
 
     final public function show(Category $category): CategoryEditResource
@@ -54,7 +54,7 @@ class CategoryController extends Controller
         }
 
         $category->update($category_data);
-        return response()->json(['msg' => 'Category Updated Successfully', 'cls' => 'success']);
+        return response()->json(['msg' => 'Berhasil Mengubah Data Kategori', 'cls' => 'success']);
     }
 
     final public function destroy(Category $category): JsonResponse
@@ -64,7 +64,7 @@ class CategoryController extends Controller
             ImageManager::deletePhoto(Category::THUMB_IMAGE_UPLOAD_PATH, $category->photo);
         }
         $category->delete();
-        return response()->json(['msg' => 'Category deleted Successfully', 'cls' => 'warning']);
+        return response()->json(['msg' => 'Berhasil Menghapus Data Kategori', 'cls' => 'warning']);
     }
 
     final public function get_category_list(): JsonResponse

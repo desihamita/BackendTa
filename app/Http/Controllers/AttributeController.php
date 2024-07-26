@@ -32,7 +32,7 @@ class AttributeController extends Controller
             DB::beginTransaction();
             $attribute = (new Attribute())->storeAttribute($request->all(), auth()->id());
             DB::commit();
-            return response()->json(['msg' => 'Ingredients Created Successfully', 'cls' => 'success', 'attribute_id' => $attribute->id]);
+            return response()->json(['msg' => 'Berhasil Menambahkan Data Bahan Baku', 'cls' => 'success', 'attribute_id' => $attribute->id]);
         } catch (\Throwable $e) {
             DB::rollback();
             return response()->json(['msg' => $e->getMessage(), 'cls' => 'error']);
@@ -77,7 +77,7 @@ class AttributeController extends Controller
 
         $attribute->update($attribute_data);
 
-        return response()->json(['msg' => 'Ingredients Updated Successfully', 'cls' => 'success']);
+        return response()->json(['msg' => 'Berhasil Mengubah Data Bahan Baku', 'cls' => 'success']);
     }
 
     final public function destroy(Attribute $attribute): JsonResponse
@@ -87,7 +87,7 @@ class AttributeController extends Controller
             ImageManager::deletePhoto(Attribute::THUMB_IMAGE_UPLOAD_PATH, $attribute->photo);
         }
         $attribute->delete();
-        return response()->json(['msg' => 'Ingredients deleted Successfully', 'cls' => 'warning']);
+        return response()->json(['msg' => 'Berhasil Menghapus Data Bahan Baku', 'cls' => 'warning']);
     }
 
     final public function get_attribute_list(): JsonResponse

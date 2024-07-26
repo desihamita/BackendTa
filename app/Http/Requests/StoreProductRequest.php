@@ -32,6 +32,7 @@ class StoreProductRequest extends FormRequest
             'status' => 'numeric|required',
             'stock' => 'numeric|required',
             'description' => 'required|max:1000|min:10',
+            'photo' => 'required',
 
             'category_id' => 'numeric',
             'sub_category_id' => 'numeric',

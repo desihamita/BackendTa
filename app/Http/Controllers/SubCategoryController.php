@@ -34,7 +34,7 @@ class SubCategoryController extends Controller
         }
 
         (new SubCategory())->storeSubCategory($sub_category);
-        return response()->json(['msg' => 'Category Created Successfully', 'cls' => 'success']);
+        return response()->json(['msg' => 'Berhasil Menambahkan Data Sub Kategori', 'cls' => 'success']);
     }
 
     final public function show(SubCategory $subCategory): SubCategoryEditResource
@@ -52,7 +52,7 @@ class SubCategoryController extends Controller
         }
 
         $subCategory->update($sub_category_data);
-        return response()->json(['msg' => 'Sub Category Updated Successfully', 'cls' => 'success']);
+        return response()->json(['msg' => 'Berhasil Mengubah Data Sub Kategori', 'cls' => 'success']);
     }
 
     public function destroy(SubCategory $subCategory)
@@ -62,7 +62,7 @@ class SubCategoryController extends Controller
             ImageManager::deletePhoto(SubCategory::THUMB_IMAGE_UPLOAD_PATH, $subCategory->photo);
         }
         $subCategory->delete();
-        return response()->json(['msg' => 'Sub Category deleted Successfully', 'cls' => 'warning']);
+        return response()->json(['msg' => 'Berhasil Menghapus Data Sub Kategori', 'cls' => 'warning']);
     }
 
     private function processImageUpload(string $photo, string $name, string|null $existing_photo = null): string
